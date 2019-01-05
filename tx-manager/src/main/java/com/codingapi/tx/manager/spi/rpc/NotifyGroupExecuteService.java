@@ -81,7 +81,7 @@ public class NotifyGroupExecuteService implements RpcExecuteService {
                 try {
                     MessageDto respMsg =
                             rpcClient.request(transUnit.getRemoteKey(), MessageCreator.notifyUnit(notifyUnitParams));
-                    log.info("notify unit: {}", transUnit.getRemoteKey());
+                    log.debug("notify unit: {}", transUnit.getRemoteKey());
 
                     txLogger.trace(
                             transactionCmd.getGroupId(), notifyUnitParams.getUnitId(), Transactions.TAG_TRANSACTION,

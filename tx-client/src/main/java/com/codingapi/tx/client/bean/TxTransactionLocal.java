@@ -125,7 +125,7 @@ public class TxTransactionLocal {
      */
     public static void makeNeverAppeared() {
         if (currentLocal.get() != null) {
-            log.info("clean thread local[{}]: {}", TxTransactionLocal.class.getSimpleName(), current());
+            log.debug("清理线程变量 clean thread local[{}]: {}", TxTransactionLocal.class.getSimpleName(), current());
             currentLocal.set(null);
         }
     }

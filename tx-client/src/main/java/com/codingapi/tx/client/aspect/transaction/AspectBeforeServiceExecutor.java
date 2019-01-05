@@ -1,13 +1,13 @@
 package com.codingapi.tx.client.aspect.transaction;
 
-import com.codingapi.tx.spi.sleuth.TracerHelper;
-import com.codingapi.tx.commons.annotation.TxTransaction;
 import com.codingapi.tx.client.bean.TxTransactionInfo;
 import com.codingapi.tx.client.bean.TxTransactionLocal;
 import com.codingapi.tx.client.support.separate.TXLCNTransactionServiceExecutor;
-import com.codingapi.tx.commons.util.Transactions;
+import com.codingapi.tx.commons.annotation.TxTransaction;
 import com.codingapi.tx.commons.bean.TransactionInfo;
 import com.codingapi.tx.commons.util.RandomUtils;
+import com.codingapi.tx.commons.util.Transactions;
+import com.codingapi.tx.spi.sleuth.TracerHelper;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.reflect.MethodSignature;
@@ -65,7 +65,7 @@ public class AspectBeforeServiceExecutor {
         TxTransactionLocal txTransactionLocal = TxTransactionLocal.getOrNew();
         if (txTransactionLocal.getUnitId() != null) {
             txTransactionLocal.setInUnit(true);
-            log.info("tx > unit[{}] in unit: {}", unitId, txTransactionLocal.getUnitId());
+            log.debug("tx > unit[{}] in unit: {}", unitId, txTransactionLocal.getUnitId());
         }
         txTransactionLocal.setUnitId(unitId);
         txTransactionLocal.setGroupId(groupId);

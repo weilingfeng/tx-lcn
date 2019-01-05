@@ -28,17 +28,17 @@ public class TransactionAspect implements Ordered {
 
     @Around("@annotation(com.codingapi.tx.commons.annotation.TxTransaction)")
     public Object transactionRunning(ProceedingJoinPoint point)throws Throwable{
-        log.info("TX-LCN local start---->");
+        log.debug("TX-LCN local start---->");
         Object obj =  aspectBeforeServiceExecutor.around(point);
-        log.info("TX-LCN local end------>");
+        log.debug("TX-LCN local end------>");
         return obj;
     }
 
     @Around("this(com.codingapi.tx.commons.annotation.ITxTransaction) && execution( * *(..))")
     public Object around(ProceedingJoinPoint point)throws Throwable{
-        log.info("interface-ITransactionRunning-start---->");
+        log.debug("interface-ITransactionRunning-start---->");
         Object obj =  aspectBeforeServiceExecutor.around(point);
-        log.info("interface-ITransactionRunning-end---->");
+        log.debug("interface-ITransactionRunning-end---->");
         return obj;
     }
 

@@ -69,7 +69,7 @@ public class TxExceptionServiceImpl implements TxExceptionService {
     @Override
     @Transactional
     public Short transactionUnitState(String groupId, String unitId) {
-        log.info("transactionUnitState > groupId: {}, unitId: {}", groupId, unitId);
+        log.debug("transactionUnitState > groupId: {}, unitId: {}", groupId, unitId);
         TxException txException = txExceptionMapper.getByGroupAndUnitId(groupId, unitId);
         if (Objects.isNull(txException)) {
             txException = txExceptionMapper.getByGroupId(groupId);
