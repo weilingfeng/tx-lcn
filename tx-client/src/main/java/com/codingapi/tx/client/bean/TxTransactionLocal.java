@@ -12,7 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class TxTransactionLocal {
 
-    private final static ThreadLocal<TxTransactionLocal> currentLocal = new InheritableThreadLocal<TxTransactionLocal>();
+    private final static ThreadLocal<TxTransactionLocal> currentLocal = new InheritableThreadLocal<>();
 
     /**
      * 事务类型

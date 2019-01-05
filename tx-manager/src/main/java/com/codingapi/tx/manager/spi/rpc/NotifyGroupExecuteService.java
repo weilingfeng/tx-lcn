@@ -45,8 +45,7 @@ public class NotifyGroupExecuteService implements RpcExecuteService {
     private final TxLogger txLogger;
 
     @Autowired
-    public NotifyGroupExecuteService(GroupRelationship groupRelationship,
-                                     RpcClient rpcClient,
+    public NotifyGroupExecuteService(GroupRelationship groupRelationship, RpcClient rpcClient,
                                      RpcExceptionHandler rpcExceptionHandler, TxLogger txLogger) {
         this.groupRelationship = groupRelationship;
         this.rpcClient = rpcClient;
@@ -65,8 +64,7 @@ public class NotifyGroupExecuteService implements RpcExecuteService {
 
             log.debug("notify group params: {}", JSON.toJSONString(notifyGroupParams));
 
-            txLogger.trace(
-                    transactionCmd.getGroupId(), "",
+            txLogger.trace(transactionCmd.getGroupId(), "",
                     Transactions.TAG_TRANSACTION, "notify group " + notifyGroupParams.getState());
 
             groupRelationship.setTransactionState(transactionCmd.getGroupId(),(short)notifyGroupParams.getState());
@@ -79,12 +77,10 @@ public class NotifyGroupExecuteService implements RpcExecuteService {
                 notifyUnitParams.setState(notifyGroupParams.getState());
 
                 try {
-                    MessageDto respMsg =
-                            rpcClient.request(transUnit.getRemoteKey(), MessageCreator.notifyUnit(notifyUnitParams));
+                    MessageDto respMsg = rpcClient.request(transUnit.getRemoteKey(), MessageCreator.notifyUnit(notifyUnitParams));
                     log.debug("notify unit: {}", transUnit.getRemoteKey());
 
-                    txLogger.trace(
-                            transactionCmd.getGroupId(), notifyUnitParams.getUnitId(), Transactions.TAG_TRANSACTION,
+                    txLogger.trace(transactionCmd.getGroupId(), notifyUnitParams.getUnitId(), Transactions.TAG_TRANSACTION,
                             "notify unit " + respMsg.getAction());
 
                     if (!MessageUtils.statusOk(respMsg)) {
@@ -100,8 +96,7 @@ public class NotifyGroupExecuteService implements RpcExecuteService {
                     txLogger.trace(transactionCmd.getGroupId(), "", "manager", "notify unit exception");
                     // 提交/回滚通讯失败
                     log.warn("unit message exception.");
-                    rpcExceptionHandler.handleNotifyUnitMessageException(
-                            Arrays.asList(notifyUnitParams, transactionCmd.getRemoteKey()), e);
+                    rpcExceptionHandler.handleNotifyUnitMessageException(Arrays.asList(notifyUnitParams, transactionCmd.getRemoteKey()), e);
                 }
             }
         } catch (SerializerException e) {

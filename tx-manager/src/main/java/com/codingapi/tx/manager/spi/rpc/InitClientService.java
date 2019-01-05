@@ -23,18 +23,15 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class InitClientService implements RpcExecuteService {
 
-
-
     @Autowired
     private RpcClient rpcClient;
 
     @Autowired
     private TxManagerConfig txManagerConfig;
 
-
     @Override
     public Object execute(TransactionCmd transactionCmd) throws TxManagerException {
-        log.info("init client - >{}",transactionCmd);
+        log.debug("init client - >{}",transactionCmd);
         try {
             InitClientParams initClientParams = transactionCmd.getMsg().loadData(InitClientParams.class);
             rpcClient.bindAppName(transactionCmd.getRemoteKey(),initClientParams.getAppName());

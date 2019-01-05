@@ -48,14 +48,14 @@ public class TxExceptionServiceImpl implements TxExceptionService {
     private TxLogger txLogger;
 
     @Autowired
-    public TxExceptionServiceImpl(TxExceptionMapper txExceptionMapper,
-                                  RpcClient rpcClient) {
+    public TxExceptionServiceImpl(TxExceptionMapper txExceptionMapper, RpcClient rpcClient) {
         this.txExceptionMapper = txExceptionMapper;
         this.rpcClient = rpcClient;
     }
 
     @Override
     public void writeTxException(WriteTxExceptionDTO writeTxExceptionReq) {
+        log.debug("写补偿记录...");
         TxException txException = new TxException();
         txException.setCreateTime(new Date());
         txException.setGroupId(writeTxExceptionReq.getGroupId());
@@ -69,7 +69,7 @@ public class TxExceptionServiceImpl implements TxExceptionService {
     @Override
     @Transactional
     public Short transactionUnitState(String groupId, String unitId) {
-        log.debug("transactionUnitState > groupId: {}, unitId: {}", groupId, unitId);
+        log.debug("获取事务单元事务状态: transactionUnitState > groupId: {}, unitId: {}", groupId, unitId);
         TxException txException = txExceptionMapper.getByGroupAndUnitId(groupId, unitId);
         if (Objects.isNull(txException)) {
             txException = txExceptionMapper.getByGroupId(groupId);
@@ -86,6 +86,7 @@ public class TxExceptionServiceImpl implements TxExceptionService {
 
     @Override
     public ExceptionList exceptionList(Integer page, Integer limit, String keyword, int registrar) {
+        log.debug("获取补偿列表...");
         if (Objects.isNull(page) || page <= 0) {
             page = 1;
         }

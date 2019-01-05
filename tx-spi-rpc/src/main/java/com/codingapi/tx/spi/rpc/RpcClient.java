@@ -45,10 +45,10 @@ public interface RpcClient {
 
 
     /**
-     * 发送请求并相应
+     * 发送请求并响应
      * @param remoteKey   远程标识关键字
      * @param msg    指令内容
-     * @return  相应指令数据
+     * @return  响应指令数据
      * @throws RpcException
      */
     MessageDto request(String remoteKey,MessageDto msg)throws RpcException;

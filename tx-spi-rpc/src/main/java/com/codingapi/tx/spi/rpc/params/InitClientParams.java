@@ -18,6 +18,4 @@ public class InitClientParams implements Serializable {
 
     private long dtxTime;
 
-
-
 }

@@ -27,7 +27,6 @@ public class DemoServiceImpl implements DemoService {
     @Value("${spring.application.name}")
     private String appName;
 
-
     @Override
     @TxTransaction(type = Transactions.TXC)
     public String rpc(String value) {
@@ -38,7 +37,7 @@ public class DemoServiceImpl implements DemoService {
         demo.setGroupId(TxTransactionLocal.current().getGroupId());
         demo.setUnitId(TxTransactionLocal.current().getUnitId());
         demoMapper.save(demo);
-        int n = 100 / 0;
+//        int n = 100 / 0;
         return "ok-d";
     }
 }

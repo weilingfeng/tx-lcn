@@ -23,12 +23,10 @@ import java.util.List;
 @Slf4j
 public class NettyRpcClient implements RpcClient {
 
-
     @Override
     public RpcResponseState send(RpcCmd rpcCmd) throws RpcException {
         return SocketManager.getInstance().send(rpcCmd.getRemoteKey(), rpcCmd);
     }
-
 
     @Override
     public RpcResponseState send(String remoteKey, MessageDto msg) throws RpcException {
@@ -55,7 +53,7 @@ public class NettyRpcClient implements RpcClient {
         rpcCmd.setKey(key);
         rpcCmd.setRemoteKey(remoteKey);
         MessageDto result = request(rpcCmd);
-        log.debug("cmd request used time: {} ms", System.currentTimeMillis() - startTime);
+        log.debug("发送请求并响应 cmd request used time: {} ms", System.currentTimeMillis() - startTime);
         return result;
     }
 
@@ -63,7 +61,6 @@ public class NettyRpcClient implements RpcClient {
     public String loadRemoteKey() throws RpcException {
         return SocketManager.getInstance().loadRemoteKey();
     }
-
 
     @Override
     public List<String> loadAllRemoteKey() {
@@ -75,7 +72,6 @@ public class NettyRpcClient implements RpcClient {
     public List<String> moduleList(String moduleName) {
         return SocketManager.getInstance().moduleList(moduleName);
     }
-
 
     @Override
     public void bindAppName(String remoteKey, String appName) throws RpcException {

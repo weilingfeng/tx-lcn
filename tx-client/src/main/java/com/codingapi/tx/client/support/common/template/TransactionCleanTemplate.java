@@ -1,8 +1,8 @@
 package com.codingapi.tx.client.support.common.template;
 
+import com.codingapi.tx.client.aspectlog.ThreadPoolLogger;
 import com.codingapi.tx.client.support.LCNTransactionBeanHelper;
 import com.codingapi.tx.client.support.checking.DTXChecking;
-import com.codingapi.tx.client.aspectlog.ThreadPoolLogger;
 import com.codingapi.tx.commons.exception.TransactionClearException;
 import com.codingapi.tx.commons.util.Transactions;
 import com.codingapi.tx.logger.TxLogger;
@@ -61,7 +61,7 @@ public class TransactionCleanTemplate {
 
         txLogger.trace(groupId, unitId, Transactions.TAG_TRANSACTION, "clean transaction over");
 
-        log.info("clean transaction over");
+        log.debug("clean transaction over");
     }
 
     /**

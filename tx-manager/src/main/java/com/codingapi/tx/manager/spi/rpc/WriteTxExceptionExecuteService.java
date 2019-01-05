@@ -23,7 +23,6 @@ import java.util.Objects;
 @Slf4j
 public class WriteTxExceptionExecuteService implements RpcExecuteService {
 
-
     private final TxExceptionService compensationService;
 
     @Autowired
@@ -34,6 +33,7 @@ public class WriteTxExceptionExecuteService implements RpcExecuteService {
     @Override
     public Object execute(TransactionCmd transactionCmd) throws TxManagerException {
         try {
+            log.debug("执行业务...");
             TxExceptionParams txExceptionParams = transactionCmd.getMsg().loadData(TxExceptionParams.class);
             WriteTxExceptionDTO writeTxExceptionReq = new WriteTxExceptionDTO();
             writeTxExceptionReq.setClientAddress(transactionCmd.getRemoteKey());
