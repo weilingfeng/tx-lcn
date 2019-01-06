@@ -9,7 +9,5 @@ package com.codingapi.tx.logger;
  */
 public interface TxLogger {
 
-
     void trace(String groupId,String unitId,String tag, String content);
-
 }

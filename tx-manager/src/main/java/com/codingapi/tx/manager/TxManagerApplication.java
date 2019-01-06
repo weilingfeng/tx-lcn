@@ -8,7 +8,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.PostConstruct;
-import java.util.concurrent.*;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 /**
  * Description:
@@ -20,11 +21,9 @@ import java.util.concurrent.*;
 @SpringBootApplication
 public class TxManagerApplication {
 
-
     public static void main(String[] args) {
         SpringApplication.run(TxManagerApplication.class, args);
     }
-
 
     @Bean
     public Executor executor() {
@@ -35,7 +34,6 @@ public class TxManagerApplication {
     public RestTemplate restTemplate(){
         return new RestTemplate();
     }
-
 
     @Autowired
     private TxManagerManagerRefreshing txManagerManagerRefreshing;

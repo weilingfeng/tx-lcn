@@ -34,14 +34,13 @@ public class RedisManagerStorage implements ManagerStorage, DisposableBean {
     @Value("${server.port}")
     private int port;
 
-
     @Autowired
     public RedisManagerStorage(RedisTemplate<String, String> redisTemplate) {
         this.redisTemplate = redisTemplate;
     }
 
     private boolean add(String address) {
-        log.info(address);
+        log.debug(address);
         List<String> list = list();
         if(list==null){
             list = new ArrayList<>();
@@ -59,7 +58,6 @@ public class RedisManagerStorage implements ManagerStorage, DisposableBean {
         String addressList = String.join(",",array);
         redisTemplate.opsForValue().set(REDIS_PREFIX,addressList);
     }
-
 
     private List<String> list() {
         String addressList = redisTemplate.opsForValue().get(REDIS_PREFIX);
@@ -80,7 +78,6 @@ public class RedisManagerStorage implements ManagerStorage, DisposableBean {
         return list;
     }
 
-
     @Override
     public void remove(String address) {
         List<String> list = list();
@@ -92,18 +89,17 @@ public class RedisManagerStorage implements ManagerStorage, DisposableBean {
         }
     }
 
-
     @PostConstruct
     public void init(){
         String address = managerConfig.getManagerHost()+":"+port;
         add(address);
-        log.info("manager add redis finish.");
+        log.debug("manager add redis finish.");
     }
 
     @Override
     public void destroy() throws Exception {
         String address = managerConfig.getManagerHost()+":"+port;
         remove(address);
-        log.info("manager remove redis.");
+        log.debug("manager remove redis.");
     }
 }

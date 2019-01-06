@@ -1,8 +1,7 @@
 package com.codingapi.tx.manager.support;
 
-
-import com.codingapi.tx.spi.rpc.LCNCmdType;
 import com.codingapi.tx.manager.support.rpc.RpcExecuteService;
+import com.codingapi.tx.spi.rpc.LCNCmdType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
@@ -15,7 +14,6 @@ import org.springframework.stereotype.Component;
 @Component
 public class ManagerRpcBeanHelper {
 
-
     /**
      * manager bean 名称格式
      * manager_%s_%s
@@ -23,15 +21,12 @@ public class ManagerRpcBeanHelper {
      */
     private static final String RPC_BEAN_NAME_FORMAT = "rpc_%s";
 
-
     @Autowired
     private ApplicationContext spring;
-
 
     public String getServiceBeanName(LCNCmdType cmdType) {
         return String.format(RPC_BEAN_NAME_FORMAT, cmdType.getCode());
     }
-
 
     public RpcExecuteService loadManagerService(LCNCmdType cmdType) {
         return spring.getBean(getServiceBeanName(cmdType), RpcExecuteService.class);

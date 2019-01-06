@@ -17,11 +17,8 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 @Configuration
 public class RedisConfig {
 
-
     @Autowired
     public RedisConnectionFactory redisConnectionFactory;
-
-
 
     /**
      * 实例化 RedisTemplate 对象
@@ -49,7 +46,5 @@ public class RedisConfig {
         redisTemplate.setValueSerializer(new JdkSerializationRedisSerializer());
         redisTemplate.setConnectionFactory(factory);
     }
-
-
 
 }

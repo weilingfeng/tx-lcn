@@ -39,7 +39,6 @@ public class NotifyGroupExecuteService implements RpcExecuteService {
 
     private final RpcClient rpcClient;
 
-
     private final RpcExceptionHandler rpcExceptionHandler;
 
     private final TxLogger txLogger;
@@ -90,8 +89,6 @@ public class NotifyGroupExecuteService implements RpcExecuteService {
                                 Arrays.asList(notifyUnitParams, transactionCmd.getRemoteKey()),
                                 SerializerContext.getInstance().deSerialize(respMsg.getBytes(), Throwable.class));
                     }
-
-
                 } catch (RpcException e) {
                     txLogger.trace(transactionCmd.getGroupId(), "", "manager", "notify unit exception");
                     // 提交/回滚通讯失败

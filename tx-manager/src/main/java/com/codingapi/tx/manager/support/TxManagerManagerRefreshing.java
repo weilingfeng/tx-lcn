@@ -1,8 +1,8 @@
 package com.codingapi.tx.manager.support;
 
-import com.codingapi.tx.spi.rpc.params.NotifyConnectParams;
 import com.codingapi.tx.manager.config.TxManagerConfig;
 import com.codingapi.tx.manager.db.ManagerStorage;
+import com.codingapi.tx.spi.rpc.params.NotifyConnectParams;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -33,10 +33,8 @@ public class TxManagerManagerRefreshing {
 
     private String managerRefreshUrl = "http://%s/manager/refresh";
 
-
     @Autowired
     private TxManagerConfig txManagerConfig;
-
 
     public void refresh() {
         NotifyConnectParams notifyConnectParams = new NotifyConnectParams();
@@ -44,14 +42,14 @@ public class TxManagerManagerRefreshing {
         notifyConnectParams.setPort(txManagerConfig.getRpcPort());
 
         List<String> addressList =  managerStorage.addressList();
-        log.info("addressList->{}",addressList);
+        log.debug("addressList->{}",addressList);
         for(String address:addressList){
             String url = String.format(managerRefreshUrl,address);
-            log.info("url->{}",url);
+            log.debug("url->{}",url);
             try {
                 ResponseEntity<Boolean> res =  restTemplate.postForEntity(String.format(managerRefreshUrl,address), notifyConnectParams,Boolean.class);
                 if(res.getStatusCode().equals(HttpStatus.OK)||res.getStatusCode().is5xxServerError()) {
-                    log.info("manager refresh res->{}", res);
+                    log.debug("manager refresh res->{}", res);
                 }else{
                     managerStorage.remove(address);
                 }
@@ -67,7 +65,6 @@ public class TxManagerManagerRefreshing {
                         managerStorage.remove(address);
                     }
                 }
-
             }
         }
     }

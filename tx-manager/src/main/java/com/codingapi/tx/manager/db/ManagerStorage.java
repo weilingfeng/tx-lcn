@@ -11,7 +11,6 @@ import java.util.List;
  */
 public interface ManagerStorage {
 
-
     /**
      * 获取Manager地址列表
      * @return  addressList

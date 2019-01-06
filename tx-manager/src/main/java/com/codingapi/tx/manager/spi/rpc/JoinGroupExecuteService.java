@@ -25,16 +25,13 @@ public class JoinGroupExecuteService implements RpcExecuteService {
 
     private final GroupRelationship groupRelationship;
 
-
     private final TxLogger txLogger;
-
 
     @Autowired
     public JoinGroupExecuteService(GroupRelationship groupRelationship, TxLogger txLogger) {
         this.groupRelationship = groupRelationship;
         this.txLogger = txLogger;
     }
-
 
     @Override
     public Object execute(TransactionCmd transactionCmd) throws TxManagerException {
