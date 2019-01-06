@@ -13,7 +13,6 @@ import org.springframework.stereotype.Component;
  * LCN 事务拦截器
  * create by lorne on 2018/1/5
  */
-
 @Aspect
 @Component
 @Slf4j
@@ -24,7 +23,6 @@ public class TransactionAspect implements Ordered {
 
     @Autowired
     private AspectBeforeServiceExecutor aspectBeforeServiceExecutor;
-
 
     @Around("@annotation(com.codingapi.tx.commons.annotation.TxTransaction)")
     public Object transactionRunning(ProceedingJoinPoint point)throws Throwable{
@@ -41,7 +39,6 @@ public class TransactionAspect implements Ordered {
         log.debug("interface-ITransactionRunning-end---->");
         return obj;
     }
-
 
     @Override
     public int getOrder() {

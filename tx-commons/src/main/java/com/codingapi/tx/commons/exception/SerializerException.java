@@ -7,7 +7,6 @@ package com.codingapi.tx.commons.exception;
  */
 public class SerializerException extends Exception {
 
-
     public SerializerException() {
         super();
     }
@@ -27,6 +26,5 @@ public class SerializerException extends Exception {
     protected SerializerException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
         super(message, cause, enableSuppression, writableStackTrace);
     }
-
 
 }

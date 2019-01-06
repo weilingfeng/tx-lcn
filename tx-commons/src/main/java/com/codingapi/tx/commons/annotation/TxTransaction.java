@@ -11,7 +11,6 @@ import java.lang.annotation.*;
 @Documented
 public @interface TxTransaction {
 
-
     /**
      * 是否LCN事务发起方
      * @return true 是:是发起方 false 否:是参与方
