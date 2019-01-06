@@ -1,8 +1,8 @@
 package com.codingapi.tx.logger;
 
 import com.codingapi.tx.logger.db.LogDbProperties;
-import com.codingapi.tx.logger.db.TxLoggerHelper;
 import com.codingapi.tx.logger.db.TxLog;
+import com.codingapi.tx.logger.db.TxLoggerHelper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -54,7 +54,6 @@ public class DefaultTxLogger implements TxLogger {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-mm-dd  HH:mm:ss SSS");
         return format.format(new Date());
     }
-
 
     @Override
     public void trace(String groupId, String unitId, String tag, String content) {
