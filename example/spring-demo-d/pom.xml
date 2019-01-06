@@ -22,7 +22,6 @@
             <version>5.0.0</version>
         </dependency>
 
-
         <dependency>
             <groupId>com.codingapi</groupId>
             <artifactId>tx-client-springcloud</artifactId>
