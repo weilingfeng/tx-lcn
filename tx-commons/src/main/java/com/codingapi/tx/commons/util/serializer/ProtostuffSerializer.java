@@ -21,8 +21,6 @@ import java.io.ByteArrayOutputStream;
         return (Schema<T>) cachedSchema.get(cls);
     }
 
-
-
     @Override
     public byte[] serialize(Object obj) throws SerializerException {
         Class cls = obj.getClass();
