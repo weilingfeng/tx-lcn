@@ -1,22 +1,22 @@
 package com.codingapi.tx.client.support.common.template;
 
+import com.codingapi.tx.client.aspectlog.ThreadPoolLogger;
 import com.codingapi.tx.client.support.checking.DTXChecking;
 import com.codingapi.tx.client.support.checking.DTXExceptionHandler;
-import com.codingapi.tx.client.aspectlog.ThreadPoolLogger;
 import com.codingapi.tx.client.support.rpc.MessageCreator;
 import com.codingapi.tx.commons.bean.TransactionInfo;
 import com.codingapi.tx.commons.exception.BeforeBusinessException;
 import com.codingapi.tx.commons.exception.SerializerException;
 import com.codingapi.tx.commons.exception.TransactionClearException;
 import com.codingapi.tx.commons.exception.TxClientException;
-import com.codingapi.tx.commons.util.serializer.SerializerContext;
-import com.codingapi.tx.spi.rpc.params.JoinGroupParams;
-import com.codingapi.tx.spi.rpc.params.NotifyGroupParams;
 import com.codingapi.tx.commons.util.Transactions;
+import com.codingapi.tx.commons.util.serializer.SerializerContext;
 import com.codingapi.tx.logger.TxLogger;
 import com.codingapi.tx.spi.rpc.RpcClient;
 import com.codingapi.tx.spi.rpc.dto.MessageDto;
 import com.codingapi.tx.spi.rpc.exception.RpcException;
+import com.codingapi.tx.spi.rpc.params.JoinGroupParams;
+import com.codingapi.tx.spi.rpc.params.NotifyGroupParams;
 import com.codingapi.tx.spi.rpc.util.MessageUtils;
 import com.codingapi.tx.spi.sleuth.TracerHelper;
 import lombok.extern.slf4j.Slf4j;
@@ -87,8 +87,7 @@ public class TransactionControlTemplate {
             tracerHelper.createGroupId(groupId, remoteKey);
 
             // 日志
-            log.debug("transaction type[{}] > create group > groupId: {}, unitId: {}, remoteKey: {}",
-                    transactionType, groupId, unitId, remoteKey);
+            log.debug("transaction type[{}] > create group > groupId: {}, unitId: {}, remoteKey: {}", transactionType, groupId, unitId, remoteKey);
 
             // TxManager创建事务组
             MessageDto messageDto = rpcClient.request(remoteKey, MessageCreator.createGroup(groupId));
@@ -99,10 +98,8 @@ public class TransactionControlTemplate {
                 return;
             }
             // 创建事务组业务失败
-            dtxExceptionHandler.handleCreateGroupBusinessException(
-                    Arrays.asList(groupId, remoteKey), new Exception("TxManager业务异常"));
+            dtxExceptionHandler.handleCreateGroupBusinessException(Arrays.asList(groupId, remoteKey), new Exception("TxManager业务异常"));
         } catch (RpcException e) {
-
             // 通讯异常
             dtxExceptionHandler.handleCreateGroupMessageException(Arrays.asList(groupId, remoteKey), e);
         }
@@ -117,8 +114,7 @@ public class TransactionControlTemplate {
      * @param transactionType
      * @throws TxClientException 加入事务组失败时抛出
      */
-    public void joinGroup(String groupId, String unitId, String transactionType, TransactionInfo transactionInfo)
-            throws TxClientException {
+    public void joinGroup(String groupId, String unitId, String transactionType, TransactionInfo transactionInfo) throws TxClientException {
         txLogger.trace(groupId, unitId, Transactions.TAG_TRANSACTION, "join group");
         String managerKey = Optional.ofNullable(tracerHelper.getTxManagerKey()).orElseThrow(() -> new RuntimeException("sleuth pass error."));
         JoinGroupParams joinGroupParams = new JoinGroupParams();
@@ -126,8 +122,7 @@ public class TransactionControlTemplate {
         joinGroupParams.setUnitId(unitId);
         joinGroupParams.setUnitType(transactionType);
         // 日志
-        log.debug("transaction type[{}] > join group > groupId: {}, unitId: {}, remoteKey: {}",
-                transactionType, groupId, unitId, managerKey);
+        log.debug("transaction type[{}] > join group > groupId: {}, unitId: {}, remoteKey: {}", transactionType, groupId, unitId, managerKey);
         try {
             MessageDto messageDto = rpcClient.request(managerKey, MessageCreator.joinGroup(joinGroupParams));
             if (MessageUtils.statusOk(messageDto)) {
@@ -144,7 +139,6 @@ public class TransactionControlTemplate {
         } catch (RpcException e) {
             dtxExceptionHandler.handleJoinGroupMessageException(joinGroupParams, e);
         }
-
         txLogger.trace(groupId, unitId, Transactions.TAG_TRANSACTION, "join group over");
     }
 
@@ -163,11 +157,9 @@ public class TransactionControlTemplate {
         notifyGroupParams.setState(state);
         String managerKey = Optional.ofNullable(tracerHelper.getTxManagerKey()).orElseThrow(() -> new RuntimeException("sleuth pass error."));
         // 日志
-        log.debug("transaction type[{}] > close group > groupId: {}, unitId: {}, remoteKey: {}",
-                transactionType, groupId, unitId, managerKey);
+        log.debug("transaction type[{}] > close group > groupId: {}, unitId: {}, remoteKey: {}", transactionType, groupId, unitId, managerKey);
         try {
-            MessageDto messageDto =
-                    rpcClient.request(managerKey, MessageCreator.notifyGroup(notifyGroupParams));
+            MessageDto messageDto = rpcClient.request(managerKey, MessageCreator.notifyGroup(notifyGroupParams));
             // 成功清理发起方事务
             if (MessageUtils.statusOk(messageDto)) {
                 log.info("{} > close transaction group.", transactionType);
@@ -182,15 +174,12 @@ public class TransactionControlTemplate {
         } catch (TransactionClearException e) {
             log.error("clear exception", e);
         } catch (RpcException e) {
-            dtxExceptionHandler.handleNotifyGroupMessageException(
-                    Arrays.asList(notifyGroupParams, unitId, transactionType), e
+            dtxExceptionHandler.handleNotifyGroupMessageException(Arrays.asList(notifyGroupParams, unitId, transactionType), e
             );
         } catch (SerializerException e) {
-            dtxExceptionHandler.handleNotifyGroupBusinessException(
-                    Arrays.asList(notifyGroupParams, unitId, transactionType), e
+            dtxExceptionHandler.handleNotifyGroupBusinessException(Arrays.asList(notifyGroupParams, unitId, transactionType), e
             );
         }
-
         txLogger.trace(groupId, unitId, Transactions.TAG_TRANSACTION, "notify group exception " + state);
     }
 }

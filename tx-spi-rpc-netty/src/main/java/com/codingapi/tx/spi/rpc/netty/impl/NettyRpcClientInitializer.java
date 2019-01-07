@@ -59,7 +59,7 @@ public class NettyRpcClientInitializer implements RpcClientInitializer, Disposab
                 b.option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 5000);
                 b.handler(nettyRpcClientHandlerInitHandler);
                 ChannelFuture channelFuture = b.connect(socketAddress).syncUninterruptibly();
-                log.info("client -> {} , state:{}", socketAddress, channelFuture.isSuccess());
+                log.debug("client -> {} , state:{}", socketAddress, channelFuture.isSuccess());
             } catch (Exception e) {
 
                 if (e instanceof ConnectException) {
@@ -78,6 +78,6 @@ public class NettyRpcClientInitializer implements RpcClientInitializer, Disposab
     @Override
     public void destroy() throws Exception {
         workerGroup.shutdownGracefully();
-        log.info("client was down.");
+        log.debug("client was down.");
     }
 }
