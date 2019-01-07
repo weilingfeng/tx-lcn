@@ -32,12 +32,10 @@ import java.util.List;
 @Slf4j
 public class NettyRpcClientInitializer implements RpcClientInitializer, DisposableBean {
 
-
     @Autowired
     private NettyRpcClientHandlerInitHandler nettyRpcClientHandlerInitHandler;
 
     private EventLoopGroup workerGroup;
-
 
     @Override
     public void init(List<TxManagerHost> hosts) {
@@ -49,12 +47,11 @@ public class NettyRpcClientInitializer implements RpcClientInitializer, Disposab
         }
     }
 
-
     @Override
     public synchronized void connect(SocketAddress socketAddress){
         if(SocketManager.getInstance().noConnect(socketAddress)) {
             try {
-                log.info(" try connect {} ",socketAddress);
+                log.debug("try connect {} ",socketAddress);
                 Bootstrap b = new Bootstrap();
                 b.group(workerGroup);
                 b.channel(NioSocketChannel.class);
@@ -77,7 +74,6 @@ public class NettyRpcClientInitializer implements RpcClientInitializer, Disposab
             }
         }
     }
-
 
     @Override
     public void destroy() throws Exception {

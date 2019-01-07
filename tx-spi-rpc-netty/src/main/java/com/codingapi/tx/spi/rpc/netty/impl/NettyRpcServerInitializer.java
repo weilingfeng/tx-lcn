@@ -54,14 +54,13 @@ public class NettyRpcServerInitializer implements RpcServerInitializer, Disposab
 
             // Start the server.
             b.bind(port);
-            log.info("Socket started on rpcPort(s):{}(socket)",port);
+            log.debug("Socket started on rpcPort(s):{}(socket)",port);
 
         } catch (Exception e) {
             // Shut down all event loops to terminate all threads.
             e.printStackTrace();
         }
     }
-
 
     @Override
     public void destroy() throws Exception {
@@ -72,7 +71,7 @@ public class NettyRpcServerInitializer implements RpcServerInitializer, Disposab
             bossGroup.shutdownGracefully();
         }
 
-        log.info("server was down.");
+        log.debug("server was down.");
     }
 
 

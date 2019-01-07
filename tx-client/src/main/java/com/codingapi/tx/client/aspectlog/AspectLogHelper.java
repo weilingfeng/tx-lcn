@@ -1,7 +1,7 @@
 package com.codingapi.tx.client.aspectlog;
 
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.dbutils.*;
+import org.apache.commons.dbutils.ResultSetHandler;
 import org.apache.commons.dbutils.handlers.ScalarHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -44,11 +44,8 @@ public class AspectLogHelper {
                 "UNIT_ID_HASH BIGINT NOT NULL," +
                 "TIME BIGINT NOT NULL, " +
                 "PRIMARY KEY(ID) )");
-
-        log.info("table init TXLCN_LOG finish");
-
+        log.debug("table init TXLCN_LOG finish");
     }
-
 
     public boolean save(AspectLog txLog) {
         String insertSql = "INSERT INTO TXLCN_LOG(UNIT_ID,GROUP_ID,BYTES,METHOD_STR,GROUP_ID_HASH,UNIT_ID_HASH,TIME) VALUES(?,?,?,?,?,?,?)";
@@ -119,7 +116,6 @@ public class AspectLogHelper {
         }
     };
 
-
     private AspectLog fill(ResultSet resultSet) throws SQLException {
         AspectLog txLog = new AspectLog();
         txLog.setBytes(resultSet.getBytes("BYTES"));
@@ -132,5 +128,4 @@ public class AspectLogHelper {
         txLog.setId(resultSet.getLong("ID"));
         return txLog;
     }
-
 }
