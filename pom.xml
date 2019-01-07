@@ -89,10 +89,7 @@
         <relativePath/>
     </parent>
 
-
-
     <dependencies>
-
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -147,10 +144,7 @@
             <artifactId>guava</artifactId>
         </dependency>
 
-
     </dependencies>
-
-
 
     <dependencyManagement>
         <dependencies>
@@ -161,11 +155,11 @@
                 <version>${codingapi.txlcn.version}</version>
             </dependency>
 
-            <dependency>
-                <groupId>com.codingapi</groupId>
-                <artifactId>tx-client-dubbo</artifactId>
-                <version>${codingapi.txlcn.version}</version>
-            </dependency>
+            <!--<dependency>-->
+                <!--<groupId>com.codingapi</groupId>-->
+                <!--<artifactId>tx-client-dubbo</artifactId>-->
+                <!--<version>${codingapi.txlcn.version}</version>-->
+            <!--</dependency>-->
 
             <dependency>
                 <groupId>com.codingapi</groupId>
@@ -173,11 +167,11 @@
                 <version>${codingapi.txlcn.version}</version>
             </dependency>
 
-            <dependency>
-                <groupId>com.codingapi</groupId>
-                <artifactId>tx-spi-sleuth-dubbo</artifactId>
-                <version>${codingapi.txlcn.version}</version>
-            </dependency>
+            <!--<dependency>-->
+                <!--<groupId>com.codingapi</groupId>-->
+                <!--<artifactId>tx-spi-sleuth-dubbo</artifactId>-->
+                <!--<version>${codingapi.txlcn.version}</version>-->
+            <!--</dependency>-->
 
             <dependency>
                 <groupId>com.codingapi</groupId>
@@ -228,13 +222,11 @@
                 <version>${txlcn-com.github.pagehelper.version}</version>
             </dependency>
 
-
             <dependency>
                 <groupId>org.mybatis.spring.boot</groupId>
                 <artifactId>mybatis-spring-boot-starter</artifactId>
                 <version>${txlcn-org.mybatis.spring.boot.version}</version>
             </dependency>
-
 
             <dependency>
                 <groupId>com.h2database</groupId>
@@ -260,13 +252,11 @@
                 <version>${txlcn-com.github.jsqlparser.version}</version>
             </dependency>
 
-
             <dependency>
                 <groupId>org.projectlombok</groupId>
                 <artifactId>lombok</artifactId>
                 <version>${txlcn-org.projectlombok.version}</version>
             </dependency>
-
 
             <dependency>
                 <groupId>io.netty</groupId>
@@ -318,9 +308,6 @@
                 <version>${txlcn-guava.version}</version>
             </dependency>
 
-
-
-
             <dependency>
                 <groupId>org.springframework.cloud</groupId>
                 <artifactId>spring-cloud-dependencies</artifactId>
@@ -328,7 +315,6 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
-
 
         </dependencies>
     </dependencyManagement>
@@ -368,7 +354,6 @@
             </roles>
             <timezone>+8</timezone>
         </developer>
-
     </developers>
 
     <scm>
@@ -414,7 +399,6 @@
                     </execution>
                 </executions>
             </plugin>
-
 
             <plugin>
                 <groupId>org.sonatype.plugins</groupId>
