@@ -126,7 +126,7 @@ public class TransactionControlTemplate {
         try {
             MessageDto messageDto = rpcClient.request(managerKey, MessageCreator.joinGroup(joinGroupParams));
             if (MessageUtils.statusOk(messageDto)) {
-                log.info("{} > joined group.", transactionType);
+                log.debug("{} > joined group.", transactionType);
 
                 // 异步检测
                 dtxChecking.startDelayCheckingAsync(groupId, unitId, transactionType);
@@ -162,7 +162,7 @@ public class TransactionControlTemplate {
             MessageDto messageDto = rpcClient.request(managerKey, MessageCreator.notifyGroup(notifyGroupParams));
             // 成功清理发起方事务
             if (MessageUtils.statusOk(messageDto)) {
-                log.info("{} > close transaction group.", transactionType);
+                log.debug("{} > close transaction group.", transactionType);
                 transactionCleanTemplate.clean(groupId, unitId, transactionType, state);
                 return;
             }
@@ -174,11 +174,9 @@ public class TransactionControlTemplate {
         } catch (TransactionClearException e) {
             log.error("clear exception", e);
         } catch (RpcException e) {
-            dtxExceptionHandler.handleNotifyGroupMessageException(Arrays.asList(notifyGroupParams, unitId, transactionType), e
-            );
+            dtxExceptionHandler.handleNotifyGroupMessageException(Arrays.asList(notifyGroupParams, unitId, transactionType), e);
         } catch (SerializerException e) {
-            dtxExceptionHandler.handleNotifyGroupBusinessException(Arrays.asList(notifyGroupParams, unitId, transactionType), e
-            );
+            dtxExceptionHandler.handleNotifyGroupBusinessException(Arrays.asList(notifyGroupParams, unitId, transactionType), e);
         }
         txLogger.trace(groupId, unitId, Transactions.TAG_TRANSACTION, "notify group exception " + state);
     }

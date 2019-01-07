@@ -35,13 +35,13 @@ public class TxcInitialization implements InitializingBean {
     @Override
     public void afterPropertiesSet() {
         if (txcSettingFactory.enable()) {
-            log.info("enabled txc transaction.");
+            log.debug("enabled txc transaction.");
             if (!tableStructAnalyser.existsTable(txcSettingFactory.lockTableName())) {
-                log.info("create lock table.");
+                log.debug("create lock table.");
                 txcSqlExecutor.createLockTable();
             }
             if (!tableStructAnalyser.existsTable(txcSettingFactory.undoLogTableName())) {
-                log.info("create undo log table.");
+                log.debug("create undo log table.");
                 txcSqlExecutor.createUndoLogTable();
             }
         }
