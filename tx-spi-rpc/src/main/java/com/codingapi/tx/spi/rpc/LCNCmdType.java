@@ -68,7 +68,6 @@ public enum LCNCmdType {
      */
     getAspectLog("get-aspect-log", MessageConstants.ACTION_GET_ASPECT_LOG);
 
-
     private String code;
 
     private String name;

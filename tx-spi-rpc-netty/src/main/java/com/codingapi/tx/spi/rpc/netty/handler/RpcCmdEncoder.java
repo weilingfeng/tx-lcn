@@ -19,7 +19,6 @@ import java.util.List;
 @Slf4j
 public class RpcCmdEncoder extends MessageToMessageEncoder<NettyRpcCmd> {
 
-
     @Override
     protected void encode(ChannelHandlerContext ctx, NettyRpcCmd cmd, List<Object> out) throws Exception {
         log.debug("send->{}", cmd);

@@ -35,7 +35,6 @@ public class MessageDto implements Serializable {
      */
     private byte[] bytes;
 
-
     public <T> T loadData(Class<T> tClass) throws SerializerException {
         return SerializerContext.getInstance().deSerialize(bytes,tClass);
     }

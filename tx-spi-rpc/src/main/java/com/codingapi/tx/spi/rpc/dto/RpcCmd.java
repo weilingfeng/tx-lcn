@@ -30,7 +30,6 @@ public abstract class RpcCmd implements Serializable {
      */
     private String remoteKey;
 
-
     public String getKey() {
         return key;
     }

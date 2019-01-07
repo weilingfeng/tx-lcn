@@ -1,7 +1,7 @@
 package com.codingapi.tx.spi.rpc.netty.handler;
 
-import com.codingapi.tx.spi.rpc.MessageConstants;
 import com.codingapi.tx.commons.util.RandomUtils;
+import com.codingapi.tx.spi.rpc.MessageConstants;
 import com.codingapi.tx.spi.rpc.dto.MessageDto;
 import com.codingapi.tx.spi.rpc.dto.RpcCmd;
 import com.codingapi.tx.spi.rpc.netty.SocketManager;
@@ -47,7 +47,6 @@ public class SocketManagerInitHandler extends ChannelInboundHandlerAdapter {
         SocketManager.getInstance().removeChannel(ctx.channel());
         log.error("Disconnected: {}", ctx.channel().remoteAddress());
     }
-
 
     @Override
     public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {

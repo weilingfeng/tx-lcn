@@ -16,8 +16,9 @@ import java.util.concurrent.locks.ReentrantLock;
  */
 public class RpcContent {
 
-
-    //默认值3秒
+    /**
+     * 默认值3秒
+     */
     private int seconds;
 
     private volatile MessageDto res;
@@ -28,7 +29,6 @@ public class RpcContent {
 
     private volatile boolean used = false;
 
-
     public void init(){
         used = true;
     }
@@ -37,7 +37,6 @@ public class RpcContent {
         used = false;
         res = null;
     }
-
 
     public boolean isUsed() {
         return used;

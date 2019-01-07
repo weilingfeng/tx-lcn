@@ -11,12 +11,10 @@ import com.codingapi.tx.spi.rpc.dto.ManagerProperties;
  */
 public interface RpcServerInitializer {
 
-
     /**
      * support server init
      *
      * @param managerProperties   配置信息
      */
     void init(ManagerProperties managerProperties);
-
 }

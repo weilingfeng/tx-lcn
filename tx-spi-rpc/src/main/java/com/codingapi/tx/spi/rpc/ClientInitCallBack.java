@@ -9,8 +9,6 @@ package com.codingapi.tx.spi.rpc;
  */
 public interface ClientInitCallBack {
 
-
     void connected(String remoteKey);
-
 
 }

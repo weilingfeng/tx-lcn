@@ -1,8 +1,8 @@
 package com.codingapi.tx.spi.rpc.netty.handler;
 
-import com.codingapi.tx.spi.rpc.MessageConstants;
 import com.codingapi.tx.commons.util.RandomUtils;
 import com.codingapi.tx.spi.rpc.ClientInitCallBack;
+import com.codingapi.tx.spi.rpc.MessageConstants;
 import com.codingapi.tx.spi.rpc.dto.MessageDto;
 import com.codingapi.tx.spi.rpc.netty.SocketManager;
 import com.codingapi.tx.spi.rpc.netty.bean.NettyRpcCmd;
@@ -81,6 +81,5 @@ public class NettyClientRetryHandler extends ChannelInboundHandlerAdapter {
         }
         //发送数据包检测是否断开连接.
         ctx.writeAndFlush(heartCmd);
-
     }
 }

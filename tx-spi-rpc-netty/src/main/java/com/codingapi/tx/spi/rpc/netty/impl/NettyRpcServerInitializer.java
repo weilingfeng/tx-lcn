@@ -33,7 +33,6 @@ public class NettyRpcServerInitializer implements RpcServerInitializer, Disposab
     private EventLoopGroup workerGroup;
     private NioEventLoopGroup bossGroup;
 
-
     @Override
     public void init(ManagerProperties managerProperties) {
         NettyContext.type = NettyType.server;
@@ -73,6 +72,5 @@ public class NettyRpcServerInitializer implements RpcServerInitializer, Disposab
 
         log.debug("server was down.");
     }
-
 
 }

@@ -13,7 +13,6 @@ import org.springframework.stereotype.Component;
 @Component
 public class TracerHelper {
 
-
     /**
      * 事务组标示Id
      */

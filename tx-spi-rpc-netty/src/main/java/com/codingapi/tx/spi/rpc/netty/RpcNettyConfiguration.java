@@ -27,7 +27,6 @@ import javax.annotation.PostConstruct;
 @Data
 public class RpcNettyConfiguration {
 
-
     /**
      * 最大等待时间 单位:(s)
      */
@@ -38,13 +37,11 @@ public class RpcNettyConfiguration {
      */
     private int cacheSize = 1024;
 
-
     @Bean
     @ConditionalOnMissingBean
     public RpcAnswer rpcClientAnswer(){
         return rpcCmd -> log.info("cmd->{}",rpcCmd);
     }
-
 
     @Bean
     @ConditionalOnMissingBean

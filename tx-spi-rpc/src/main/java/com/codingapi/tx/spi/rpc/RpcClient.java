@@ -43,7 +43,6 @@ public interface RpcClient {
      */
     MessageDto request(RpcCmd rpcCmd)throws RpcException;
 
-
     /**
      * 发送请求并响应
      * @param remoteKey   远程标识关键字
@@ -53,7 +52,6 @@ public interface RpcClient {
      */
     MessageDto request(String remoteKey,MessageDto msg)throws RpcException;
 
-
     /**
      * 获取一个远程标识关键字
      * @return
@@ -61,13 +59,11 @@ public interface RpcClient {
      */
     String loadRemoteKey()throws RpcException;
 
-
     /**
      * 获取所有的远程连接对象
      * @return  远程连接对象数组.
      */
     List<String> loadAllRemoteKey();
-
 
     /**
      * 获取模块远程标识
@@ -76,15 +72,12 @@ public interface RpcClient {
      */
     List<String> moduleList(String moduleName);
 
-
     /**
      * 绑定模块名称
      * @param remoteKey 远程标识
      * @param appName   应用名称
      */
     void bindAppName(String remoteKey,String appName) throws RpcException;
-
-
 
     /**
      * 获取模块名称

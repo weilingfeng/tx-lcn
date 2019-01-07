@@ -29,7 +29,6 @@ public class SocketManager {
 
     private final AttributeKey<String> attributeKey = AttributeKey.valueOf(SocketManager.class.getName());
 
-
     private Random random;
 
     private ChannelGroup channels;
@@ -47,7 +46,6 @@ public class SocketManager {
         return manager;
     }
 
-
     public void addChannel(Channel channel) {
         channels.add(channel);
     }
@@ -56,12 +54,10 @@ public class SocketManager {
         channels.remove(channel);
     }
 
-
     private SocketManager() {
         channels = new DefaultChannelGroup(GlobalEventExecutor.INSTANCE);
         random = new Random();
     }
-
 
     private Channel getChannel(String key) throws RpcException {
         Iterator<Channel> iterator = channels.iterator();
@@ -74,7 +70,6 @@ public class SocketManager {
         }
         throw new RpcException("channel not online.");
     }
-
 
     public RpcResponseState send(String key, RpcCmd cmd) throws RpcException {
         Channel channel = getChannel(key);
@@ -95,8 +90,6 @@ public class SocketManager {
         return res;
     }
 
-
-
     public List<String> loadAllRemoteKey(){
         List<String> allKeys = new ArrayList<>();
         for (Channel channel : channels) {
@@ -104,7 +97,6 @@ public class SocketManager {
         }
         return allKeys;
     }
-
 
     public String loadRemoteKey() throws RpcException {
         int size = channels.size();
@@ -126,7 +118,6 @@ public class SocketManager {
         return channels.size();
     }
 
-
     public boolean noConnect(SocketAddress socketAddress) {
         for (Channel channel : channels) {
             if(channel.remoteAddress().toString().equals(socketAddress.toString())){
@@ -145,7 +136,6 @@ public class SocketManager {
         }
         return allKeys;
     }
-
 
     public void bindModuleName(String remoteKey,String moduleName) throws RpcException{
        Channel channel = getChannel(remoteKey);

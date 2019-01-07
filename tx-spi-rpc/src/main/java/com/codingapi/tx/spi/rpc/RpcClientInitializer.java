@@ -14,7 +14,6 @@ import java.util.List;
  */
 public interface RpcClientInitializer {
 
-
     /**
      * rpc client init
      * @param hosts

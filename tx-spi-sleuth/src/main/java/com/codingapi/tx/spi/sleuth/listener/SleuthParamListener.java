@@ -11,9 +11,7 @@ import java.util.List;
  */
 public interface SleuthParamListener {
 
-
     List<String> beforeBalance(String localKey);
-
 
     void alfterNewBalance(String key);
 

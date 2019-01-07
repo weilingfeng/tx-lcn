@@ -22,7 +22,6 @@ public class ManagerProperties  {
      */
     private int checkTime;
 
-
     /**
      * 其他参数
      */
