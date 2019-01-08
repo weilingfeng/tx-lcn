@@ -51,9 +51,7 @@ public class TransactionCleanTemplate {
     public void clean(String groupId, String unitId, String unitType, int state) throws TransactionClearException {
         txLogger.trace(groupId, unitId, Transactions.TAG_TRANSACTION, "clean transaction");
 
-        transactionBeanHelper.loadTransactionCleanService(unitType).clear(
-                groupId, state, unitId, unitType
-        );
+        transactionBeanHelper.loadTransactionCleanService(unitType).clear(groupId, state, unitId, unitType);
 
         dtxChecking.stopDelayChecking(groupId, unitId);
 
@@ -75,8 +73,7 @@ public class TransactionCleanTemplate {
      */
     public void compensationClean(String groupId, String unitId, String unitType, int state) throws TransactionClearException {
         txLogger.trace(groupId, unitId, Transactions.TAG_TRANSACTION, "clean compensation transaction");
-        transactionBeanHelper.loadTransactionCleanService(unitType).clear(groupId, state, unitId, unitType
-        );
+        transactionBeanHelper.loadTransactionCleanService(unitType).clear(groupId, state, unitId, unitType);
         dtxChecking.stopDelayChecking(groupId, unitId);
     }
 }
