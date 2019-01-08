@@ -90,7 +90,7 @@ public class SocketManager {
         return res;
     }
 
-    public List<String> loadAllRemoteKey(){
+    public List<String> loadAllRemoteKey() {
         List<String> allKeys = new ArrayList<>();
         for (Channel channel : channels) {
             allKeys.add(channel.remoteAddress().toString());
@@ -120,7 +120,7 @@ public class SocketManager {
 
     public boolean noConnect(SocketAddress socketAddress) {
         for (Channel channel : channels) {
-            if(channel.remoteAddress().toString().equals(socketAddress.toString())){
+            if (channel.remoteAddress().toString().equals(socketAddress.toString())) {
                 return false;
             }
         }
@@ -130,27 +130,27 @@ public class SocketManager {
     public List<String> moduleList(String moduleName) {
         List<String> allKeys = new ArrayList<>();
         for (Channel channel : channels) {
-             if(getModuleName(channel).equals(moduleName)){
-                 allKeys.add(channel.remoteAddress().toString());
-             }
+            if (getModuleName(channel).equals(moduleName)) {
+                allKeys.add(channel.remoteAddress().toString());
+            }
         }
         return allKeys;
     }
 
-    public void bindModuleName(String remoteKey,String moduleName) throws RpcException{
-       Channel channel = getChannel(remoteKey);
-       Attribute<String> attribute =  channel.attr(attributeKey);
-       attribute.set(moduleName);
+    public void bindModuleName(String remoteKey, String moduleName) throws RpcException {
+        Channel channel = getChannel(remoteKey);
+        Attribute<String> attribute = channel.attr(attributeKey);
+        attribute.set(moduleName);
     }
 
-    public String getModuleName(Channel channel){
-        Attribute<String> attribute =  channel.attr(attributeKey);
+    public String getModuleName(Channel channel) {
+        Attribute<String> attribute = channel.attr(attributeKey);
         return attribute.get();
     }
 
-    public String getModuleName(String remoteKey)throws RpcException{
+    public String getModuleName(String remoteKey) throws RpcException {
         Channel channel = getChannel(remoteKey);
-        Attribute<String> attribute =  channel.attr(attributeKey);
+        Attribute<String> attribute = channel.attr(attributeKey);
         return attribute.get();
     }
 
