@@ -1,19 +1,19 @@
 package com.codingapi.tx.client.support.checking;
 
+import com.codingapi.tx.client.aspectlog.ThreadPoolLogger;
 import com.codingapi.tx.client.config.TxClientConfig;
 import com.codingapi.tx.client.support.LCNTransactionBeanHelper;
-import com.codingapi.tx.client.aspectlog.ThreadPoolLogger;
 import com.codingapi.tx.client.support.rpc.MessageCreator;
 import com.codingapi.tx.client.support.rpc.TxMangerReporter;
 import com.codingapi.tx.commons.exception.SerializerException;
 import com.codingapi.tx.commons.exception.TransactionClearException;
-import com.codingapi.tx.commons.util.serializer.SerializerContext;
-import com.codingapi.tx.spi.rpc.params.TxExceptionParams;
 import com.codingapi.tx.commons.util.Transactions;
+import com.codingapi.tx.commons.util.serializer.SerializerContext;
 import com.codingapi.tx.logger.TxLogger;
 import com.codingapi.tx.spi.rpc.RpcClient;
 import com.codingapi.tx.spi.rpc.dto.MessageDto;
 import com.codingapi.tx.spi.rpc.exception.RpcException;
+import com.codingapi.tx.spi.rpc.params.TxExceptionParams;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -103,6 +103,7 @@ public class SimpleDTXChecking implements DTXChecking {
 
     @Override
     public void stopDelayChecking(String groupId, String unitId) {
+        log.debug("确定分布式事务结果正常时手动结束检测");
         ScheduledFuture scheduledFuture = delayTasks.get(groupId + unitId);
         if (Objects.nonNull(scheduledFuture)) {
             txLogger.trace(groupId, unitId, Transactions.TAG_TASK, "stop delay checking task");
@@ -113,11 +114,11 @@ public class SimpleDTXChecking implements DTXChecking {
 
     private void onAskTransactionStateException(String groupId, String unitId, String transactionType) {
         try {
-            // 通知TxManager事务补偿
+            log.debug("通知TxManager事务补偿");
             txMangerReporter.reportTransactionState(groupId, unitId, TxExceptionParams.ASK_ERROR, 0);
             log.warn("{} > has compensation info!", transactionType);
 
-            // 事务回滚, 保留适当的补偿信息
+            log.debug("事务回滚, 保留适当的补偿信息");
             transactionBeanHelper.loadTransactionCleanService(transactionType).clear(groupId, 0, unitId, transactionType);
         } catch (TransactionClearException e) {
             log.error("{} > clean transaction error.", transactionType);

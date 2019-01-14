@@ -71,6 +71,7 @@ public class AsyncH2DThreadPoolLogger implements ThreadPoolLogger {
 
     @Override
     public void clearLog(String groupId, String unitId) {
+        log.debug("清理切面日志");
         executorService.submit(() -> {
             long t1 = System.currentTimeMillis();
             log.debug("event-clear-start->{}", groupId);

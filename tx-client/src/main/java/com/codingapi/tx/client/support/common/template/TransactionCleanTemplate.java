@@ -49,6 +49,7 @@ public class TransactionCleanTemplate {
      * @throws TransactionClearException
      */
     public void clean(String groupId, String unitId, String unitType, int state) throws TransactionClearException {
+        log.debug("清理事务");
         txLogger.trace(groupId, unitId, Transactions.TAG_TRANSACTION, "clean transaction");
 
         transactionBeanHelper.loadTransactionCleanService(unitType).clear(groupId, state, unitId, unitType);

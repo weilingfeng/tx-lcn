@@ -1,9 +1,9 @@
 package com.codingapi.tx.client.spi.rpc.lcn;
 
 import com.codingapi.tx.client.spi.transaction.lcn.resource.LCNConnectionProxy;
-import com.codingapi.tx.commons.exception.TransactionClearException;
-import com.codingapi.tx.client.support.common.cache.TransactionAttachmentCache;
 import com.codingapi.tx.client.support.common.TransactionCleanService;
+import com.codingapi.tx.client.support.common.cache.TransactionAttachmentCache;
+import com.codingapi.tx.commons.exception.TransactionClearException;
 import com.codingapi.tx.spi.rpc.dto.RpcResponseState;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +34,7 @@ public class LcnTransactionCleanService implements TransactionCleanService {
         Optional<LCNConnectionProxy> lcnConnectionProxy = transactionAttachmentCache.attachment(groupId, LCNConnectionProxy.class);
         if (lcnConnectionProxy.isPresent()) {
             if (lcnConnectionProxy.get().notify(state).equals(RpcResponseState.success)) {
-                // 移除本地LCN事务相关对象
+                log.debug("移除本地LCN事务相关对象");
                 transactionAttachmentCache.removeAttachments(groupId, unitId);
                 return;
             }

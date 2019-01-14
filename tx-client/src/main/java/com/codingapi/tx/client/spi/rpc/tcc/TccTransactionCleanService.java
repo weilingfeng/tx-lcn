@@ -1,11 +1,11 @@
 package com.codingapi.tx.client.spi.rpc.tcc;
 
+import com.codingapi.tx.client.bean.TCCTransactionInfo;
 import com.codingapi.tx.client.bean.TxTransactionLocal;
 import com.codingapi.tx.client.spi.transaction.tcc.control.UnitTCCInfoMap;
-import com.codingapi.tx.commons.exception.TransactionClearException;
-import com.codingapi.tx.client.bean.TCCTransactionInfo;
-import com.codingapi.tx.client.support.common.cache.TransactionAttachmentCache;
 import com.codingapi.tx.client.support.common.TransactionCleanService;
+import com.codingapi.tx.client.support.common.cache.TransactionAttachmentCache;
+import com.codingapi.tx.commons.exception.TransactionClearException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -46,6 +46,7 @@ public class TccTransactionCleanService implements TransactionCleanService {
                     tccInfo.getMethodTypeParameter());
             exeMethod.invoke(object, tccInfo.getMethodParameter());
             // 清理与事务组生命周期一样的资源
+            log.debug("tcc: 清理与事务组生命周期一样的资源");
             transactionAttachmentCache.removeAttachments(groupId, unitId);
         } catch (Exception e) {
             log.error(" rpc_tcc_" + exeMethod + e.getMessage());

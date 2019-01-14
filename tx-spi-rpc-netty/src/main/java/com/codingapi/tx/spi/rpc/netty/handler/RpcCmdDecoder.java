@@ -32,10 +32,8 @@ public class RpcCmdDecoder extends SimpleChannelInboundHandler<NettyRpcCmd> {
         if (cmd.getMsg() != null && MessageConstants.ACTION_RPC_HEART.equals(cmd.getMsg().getAction())) {
             if (NettyContext.currentType().equals(NettyType.clent)) {
                 ctx.writeAndFlush(cmd);
-                return;
-            } else {
-                return;
             }
+            return;
         }
 
         //需要响应的数据包
