@@ -14,7 +14,6 @@
     <url>https://github.com/codingapi/tx-lcn</url>
     <description>tx-lcn project for LCN</description>
 
-
     <modules>
         <module>tx-client</module>
         <module>tx-commons</module>
@@ -75,10 +74,7 @@
         <relativePath/>
     </parent>
 
-
-
     <dependencies>
-
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -128,10 +124,7 @@
             <artifactId>guava</artifactId>
         </dependency>
 
-
     </dependencies>
-
-
 
     <dependencyManagement>
         <dependencies>
@@ -156,19 +149,7 @@
 
             <dependency>
                 <groupId>com.codingapi.txlcn</groupId>
-                <artifactId>tx-spi-sleuth-dubbo</artifactId>
-                <version>${codingapi.txlcn.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>com.codingapi.txlcn</groupId>
                 <artifactId>tx-client</artifactId>
-                <version>${codingapi.txlcn.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>com.codingapi.txlcn</groupId>
-                <artifactId>tx-spi-sleuth-springcloud</artifactId>
                 <version>${codingapi.txlcn.version}</version>
             </dependency>
 
@@ -183,7 +164,6 @@
                 <artifactId>tx-commons</artifactId>
                 <version>${codingapi.txlcn.version}</version>
             </dependency>
-
 
             <dependency>
                 <groupId>com.codingapi.txlcn</groupId>
