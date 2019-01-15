@@ -22,7 +22,6 @@
         <module>tx-spi-message-netty</module>
         <module>tx-spi-sleuth</module>
         <module>tx-client-springcloud</module>
-        <module>tx-client-dubbo</module>
         <module>tx-manager</module>
         <module>tx-logger</module>
         <module>txlcn-demo</module>
@@ -138,12 +137,6 @@
 
             <dependency>
                 <groupId>com.codingapi.txlcn</groupId>
-                <artifactId>tx-client-dubbo</artifactId>
-                <version>${codingapi.txlcn.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>com.codingapi.txlcn</groupId>
                 <artifactId>tx-jdbcproxy-p6spy</artifactId>
                 <version>${codingapi.txlcn.version}</version>
             </dependency>
@@ -190,13 +183,11 @@
                 <version>${txlcn-com.github.pagehelper.version}</version>
             </dependency>
 
-
             <dependency>
                 <groupId>org.mybatis.spring.boot</groupId>
                 <artifactId>mybatis-spring-boot-starter</artifactId>
                 <version>${txlcn-org.mybatis.spring.boot.version}</version>
             </dependency>
-
 
             <dependency>
                 <groupId>com.h2database</groupId>
@@ -222,13 +213,11 @@
                 <version>${txlcn-com.github.jsqlparser.version}</version>
             </dependency>
 
-
             <dependency>
                 <groupId>org.projectlombok</groupId>
                 <artifactId>lombok</artifactId>
                 <version>${txlcn-org.projectlombok.version}</version>
             </dependency>
-
 
             <dependency>
                 <groupId>io.netty</groupId>
@@ -288,10 +277,8 @@
                 <scope>import</scope>
             </dependency>
 
-
         </dependencies>
     </dependencyManagement>
-
 
     <licenses>
         <license>
@@ -345,8 +332,6 @@
             </roles>
             <timezone>+8</timezone>
         </developer>
-
-
     </developers>
 
     <scm>
@@ -393,7 +378,6 @@
                 </executions>
             </plugin>
 
-
             <plugin>
                 <groupId>org.sonatype.plugins</groupId>
                 <artifactId>nexus-staging-maven-plugin</artifactId>
@@ -435,7 +419,6 @@
                     </execution>
                 </executions>
             </plugin>
-
         </plugins>
     </build>
 
