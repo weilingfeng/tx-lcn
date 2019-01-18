@@ -132,11 +132,9 @@ public class AdminController {
     /**
      * 删除日志
      *
-     * @param page
-     * @param limit
-     * @param groupId
-     * @param tag
+     * @param deleteLogsReq
      * @return
+     * @throws TxManagerException
      */
     @DeleteMapping("/logs")
     public boolean deleteLogs(@RequestBody DeleteLogsReq deleteLogsReq) throws TxManagerException {
