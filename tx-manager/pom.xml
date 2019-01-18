@@ -73,6 +73,7 @@
 
     </dependencies>
 
+    <!-- deploy 注释掉下 -->
     <build>
         <plugins>
             <plugin>

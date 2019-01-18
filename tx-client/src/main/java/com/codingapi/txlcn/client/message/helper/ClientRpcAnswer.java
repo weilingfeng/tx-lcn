@@ -15,13 +15,13 @@
  */
 package com.codingapi.txlcn.client.message.helper;
 
+import com.codingapi.txlcn.client.support.TXLCNTransactionBeanHelper;
+import com.codingapi.txlcn.commons.exception.TxClientException;
 import com.codingapi.txlcn.spi.message.RpcAnswer;
 import com.codingapi.txlcn.spi.message.RpcClient;
 import com.codingapi.txlcn.spi.message.dto.MessageDto;
 import com.codingapi.txlcn.spi.message.dto.RpcCmd;
 import com.codingapi.txlcn.spi.message.exception.RpcException;
-import com.codingapi.txlcn.client.support.LCNTransactionBeanHelper;
-import com.codingapi.txlcn.commons.exception.TxClientException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -39,12 +39,12 @@ import java.util.Objects;
 @Slf4j
 public class ClientRpcAnswer implements RpcAnswer {
 
-    private final LCNTransactionBeanHelper transactionBeanHelper;
+    private final TXLCNTransactionBeanHelper transactionBeanHelper;
 
     private final RpcClient rpcClient;
 
     @Autowired
-    public ClientRpcAnswer(LCNTransactionBeanHelper transactionBeanHelper, RpcClient rpcClient) {
+    public ClientRpcAnswer(TXLCNTransactionBeanHelper transactionBeanHelper, RpcClient rpcClient) {
         this.transactionBeanHelper = transactionBeanHelper;
         this.rpcClient = rpcClient;
     }

@@ -15,20 +15,16 @@
  */
 package com.codingapi.txlcn.client;
 
-import com.codingapi.txlcn.client.core.txc.resource.init.DefaultTxcSettingFactory;
-import com.codingapi.txlcn.client.core.txc.resource.init.TxcSettingFactory;
 import com.codingapi.txlcn.client.support.checking.DTXChecking;
 import com.codingapi.txlcn.client.support.checking.SimpleDTXChecking;
-import com.codingapi.txlcn.client.support.common.template.TransactionCleanTemplate;
-import org.apache.commons.dbutils.QueryRunner;
+import com.codingapi.txlcn.client.support.template.TransactionCleanTemplate;
+import com.codingapi.txlcn.commons.runner.TxLcnApplicationRunner;
 import org.springframework.beans.factory.SmartInitializingSingleton;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-
-import javax.sql.DataSource;
 
 /**
  * Description:
@@ -44,16 +40,9 @@ public class TxClientConfiguration {
 
 
     @Bean
-    public QueryRunner queryRunner(DataSource dataSource) {
-        return new QueryRunner(dataSource);
+    public TxLcnApplicationRunner txLcnApplicationRunner(ApplicationContext applicationContext){
+        return new TxLcnApplicationRunner(applicationContext);
     }
-
-    @Bean
-    @ConditionalOnMissingBean
-    public TxcSettingFactory txcSettingFactory() {
-        return new DefaultTxcSettingFactory();
-    }
-
 
     @Bean
     public SmartInitializingSingleton dtxCheckingTransactionCleanTemplateAdapter(DTXChecking dtxChecking,

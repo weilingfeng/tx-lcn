@@ -24,7 +24,6 @@
         <module>tx-client-springcloud</module>
         <module>tx-manager</module>
         <module>tx-logger</module>
-        <module>txlcn-demo</module>
     </modules>
 
     <properties>
@@ -40,7 +39,7 @@
         <maven.build.timestamp.format>yyyy-MM-dd HH:mm:ss</maven.build.timestamp.format>
         <maven.compile.source>1.8</maven.compile.source>
         <maven.compile.target>1.8</maven.compile.target>
-        <maven.source.plugin>2.4</maven.source.plugin>
+        <maven.source.plugin>3.0.1</maven.source.plugin>
         <maven-compiler-plugin.version>3.6.0</maven-compiler-plugin.version>
         <maven.javadoc.plugin>2.10.3</maven.javadoc.plugin>
         <maven.gpg.plugin>1.6</maven.gpg.plugin>
@@ -362,6 +361,7 @@
                     <source>${maven.compile.source}</source>
                     <target>${maven.compile.target}</target>
                     <encoding>${project.build.sourceEncoding}</encoding>
+                    <compilerArgument>-Xlint:deprecation</compilerArgument>
                 </configuration>
             </plugin>
             <plugin>
@@ -419,6 +419,7 @@
                     </execution>
                 </executions>
             </plugin>
+
         </plugins>
     </build>
 

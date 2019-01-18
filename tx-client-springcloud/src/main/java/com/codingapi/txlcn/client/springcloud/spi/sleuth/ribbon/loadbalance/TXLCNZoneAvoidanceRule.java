@@ -20,7 +20,6 @@ import com.netflix.loadbalancer.Server;
 import com.netflix.loadbalancer.ZoneAvoidanceRule;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.client.serviceregistry.Registration;
-import org.springframework.context.annotation.Scope;
 
 import java.util.List;
 
@@ -32,13 +31,20 @@ import java.util.List;
  * @author ujued
  */
 @Slf4j
-@Scope("prototype")
 public class TXLCNZoneAvoidanceRule extends ZoneAvoidanceRule {
 
     //针对sleuth 负载控制的ExtraField参数设置
     private final SleuthParamListener sleuthParamListener;
 
     private final Registration registration;
+
+    /**
+     * 无参构造器提供给Ribbon调用
+     */
+    public TXLCNZoneAvoidanceRule() {
+        this.sleuthParamListener = null;
+        this.registration = null;
+    }
 
     public TXLCNZoneAvoidanceRule(SleuthParamListener sleuthParamListener,
                                   Registration registration) {

@@ -16,9 +16,7 @@
 package com.codingapi.txlcn.manager.support.service;
 
 import com.codingapi.txlcn.commons.exception.TxManagerException;
-import com.codingapi.txlcn.manager.support.restapi.model.DTXInfo;
-import com.codingapi.txlcn.manager.support.restapi.model.TxLogList;
-import com.codingapi.txlcn.manager.support.restapi.model.TxManagerInfo;
+import com.codingapi.txlcn.manager.support.restapi.model.*;
 
 /**
  * Description:
@@ -32,17 +30,18 @@ public interface AdminService {
      * 登陆
      *
      * @param password password
-     * @return  token
+     * @return token
+     * @throws TxManagerException TxManagerException
      */
     String login(String password) throws TxManagerException;
 
     /**
      * 查询TX 日志
      *
-     * @param page page
-     * @param limit limit
-     * @param  groupId groupId
-     * @param tag tag
+     * @param page      page
+     * @param limit     limit
+     * @param groupId   groupId
+     * @param tag       tag
      * @param timeOrder 时间排序1 顺序 2 逆序
      * @return TxLogList
      */
@@ -61,4 +60,24 @@ public interface AdminService {
      * @return TxManagerInfo
      */
     TxManagerInfo getTxManagerInfo();
+
+    /**
+     * 删除日志
+     *
+     * @param groupId
+     * @param tag
+     * @param ld
+     * @param rd
+     * @throws TxManagerException
+     */
+    void deleteLogs(DeleteLogsReq deleteLogsReq) throws TxManagerException;
+
+    /**
+     * AppMods
+     *
+     * @param page  page
+     * @param limit limit
+     * @return AppMods
+     */
+    ListAppMods listAppMods(Integer page, Integer limit);
 }

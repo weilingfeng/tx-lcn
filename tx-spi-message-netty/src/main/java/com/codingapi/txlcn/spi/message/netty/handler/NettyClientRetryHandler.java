@@ -15,12 +15,12 @@
  */
 package com.codingapi.txlcn.spi.message.netty.handler;
 
-import com.codingapi.txlcn.spi.message.MessageConstants;
 import com.codingapi.txlcn.commons.util.RandomUtils;
 import com.codingapi.txlcn.spi.message.ClientInitCallBack;
+import com.codingapi.txlcn.spi.message.MessageConstants;
 import com.codingapi.txlcn.spi.message.dto.MessageDto;
-import com.codingapi.txlcn.spi.message.netty.SocketManager;
 import com.codingapi.txlcn.spi.message.netty.bean.NettyRpcCmd;
+import com.codingapi.txlcn.spi.message.netty.bean.SocketManager;
 import com.codingapi.txlcn.spi.message.netty.impl.NettyContext;
 import com.codingapi.txlcn.spi.message.netty.impl.NettyRpcClientInitializer;
 import io.netty.channel.ChannelHandler;

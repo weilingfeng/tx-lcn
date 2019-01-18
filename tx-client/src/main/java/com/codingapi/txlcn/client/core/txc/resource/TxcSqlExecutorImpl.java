@@ -16,18 +16,16 @@
 package com.codingapi.txlcn.client.core.txc.resource;
 
 import com.codingapi.txlcn.client.core.txc.resource.def.TxcSqlExecutor;
-import com.codingapi.txlcn.client.core.txc.resource.init.TxcSettingFactory;
+import com.codingapi.txlcn.client.core.txc.resource.def.bean.*;
+import com.codingapi.txlcn.client.core.txc.resource.init.TxcLockSql;
 import com.codingapi.txlcn.client.core.txc.resource.rs.UpdateSqlPreDataHandler;
 import com.codingapi.txlcn.client.core.txc.resource.util.SqlUtils;
-import com.codingapi.txlcn.jdbcproxy.p6spy.util.TxcUtils;
 import com.codingapi.txlcn.logger.TxLogger;
-import com.codingapi.txlcn.client.core.txc.resource.def.bean.*;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.dbutils.*;
 import org.apache.commons.dbutils.handlers.BeanHandler;
 import org.apache.commons.dbutils.handlers.ScalarHandler;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -41,27 +39,28 @@ import java.util.Objects;
  *
  * @author ujued
  */
-@Component
 @Slf4j
 public class TxcSqlExecutorImpl implements TxcSqlExecutor {
 
     private final QueryRunner queryRunner;
 
-    private final TxcSettingFactory txcSettingFactory;
+    private final TxcLockSql txcLockSql;
 
     private final TxLogger txLogger;
 
+
     @Autowired
-    public TxcSqlExecutorImpl(QueryRunner queryRunner, TxcSettingFactory txcSettingFactory, TxLogger txLogger) {
+    public TxcSqlExecutorImpl(QueryRunner queryRunner, TxcLockSql txcLockSql, TxLogger txLogger) {
         this.queryRunner = queryRunner;
-        this.txcSettingFactory = txcSettingFactory;
+        this.txcLockSql = txcLockSql;
         this.txLogger = txLogger;
     }
+
 
     @Override
     public void createLockTable() {
         try {
-            queryRunner.execute(txcSettingFactory.lockTableSql());
+            queryRunner.execute(txcLockSql.lockTableSql());
         } catch (SQLException e) {
             log.error("txc > sql executor > create lock table error.", e);
         }
@@ -70,7 +69,7 @@ public class TxcSqlExecutorImpl implements TxcSqlExecutor {
     @Override
     public void createUndoLogTable() {
         try {
-            queryRunner.execute(txcSettingFactory.undoLogTableSql());
+            queryRunner.execute(txcLockSql.undoLogTableSql());
         } catch (SQLException e) {
             log.error("txc > sql executor > create undo_log table error.", e);
         }
@@ -88,7 +87,7 @@ public class TxcSqlExecutorImpl implements TxcSqlExecutor {
                 + String.join(SqlUtils.SQL_COMMA_SEPARATOR, updateImageParams.getTables())
                 + SqlUtils.WHERE
                 + updateImageParams.getWhereSql();
-        return queryRunner.query(connection, TxcUtils.txcSQL(beforeSql),
+        return queryRunner.query(connection, beforeSql,
                 new UpdateSqlPreDataHandler(updateImageParams.getPrimaryKeys(), updateImageParams.getColumns()));
     }
 
@@ -100,7 +99,7 @@ public class TxcSqlExecutorImpl implements TxcSqlExecutor {
                 String.join(SqlUtils.SQL_COMMA_SEPARATOR, deleteImageParams.getTables()) +
                 SqlUtils.WHERE +
                 deleteImageParams.getSqlWhere();
-        return queryRunner.query(connection, TxcUtils.txcSQL(beforeSql),
+        return queryRunner.query(connection, beforeSql,
                 new UpdateSqlPreDataHandler(
                         deleteImageParams.getPrimaryKeys(),
                         deleteImageParams.getColumns()));
@@ -109,7 +108,7 @@ public class TxcSqlExecutorImpl implements TxcSqlExecutor {
     @Override
     public List<ModifiedRecord> selectSqlPreviousPrimaryKeys(Connection connection, SelectImageParams selectImageParams)
             throws SQLException {
-        return queryRunner.query(connection, TxcUtils.txcSQL(selectImageParams.getSql()),
+        return queryRunner.query(connection, selectImageParams.getSql(),
                 new UpdateSqlPreDataHandler(
                         selectImageParams.getPrimaryKeys(),
                         selectImageParams.getPrimaryKeys()));
@@ -117,9 +116,9 @@ public class TxcSqlExecutorImpl implements TxcSqlExecutor {
 
     @Override
     public void tryLock(Connection connection, LockInfo lockInfo) throws SQLException {
-        String lockSql = "INSERT INTO `" + txcSettingFactory.lockTableName() +
+        String lockSql = "INSERT INTO `" + txcLockSql.lockTableName() +
                 "` (table_name, key_value, group_id, unit_id, x_lock, s_lock) values(?, ?, ?, ?, ?, ?)";
-        queryRunner.insert(connection, TxcUtils.txcSQL(lockSql), new ScalarHandler<Integer>(),
+        queryRunner.insert(connection, lockSql, new ScalarHandler<Integer>(),
                 lockInfo.getTableName(),
                 lockInfo.getKeyValue(),
                 lockInfo.getGroupId(),
@@ -131,7 +130,7 @@ public class TxcSqlExecutorImpl implements TxcSqlExecutor {
     @Override
     public void clearLock(String groupId, String unitId) throws SQLException {
         log.debug("txc > sql > executor > clear lock. groupId: {}, unitId: {}", groupId, unitId);
-        String cleanLockSql = "DELETE FROM `" + txcSettingFactory.lockTableName() + "` where group_id = ? and unit_id = ?";
+        String cleanLockSql = "DELETE FROM `" + txcLockSql.lockTableName() + "` where group_id = ? and unit_id = ?";
         queryRunner.update(cleanLockSql, groupId, unitId);
 
     }
@@ -140,10 +139,12 @@ public class TxcSqlExecutorImpl implements TxcSqlExecutor {
     public void writeUndoLog(UndoLogDO undoLogDo) throws SQLException {
         log.debug("txc > write undo log. params: {}", undoLogDo);
         // 后置镜像查询 暂不记录
-
+        txLogger.trace(undoLogDo.getGroupId(), undoLogDo.getUnitId(), "txc",
+                "write undo log before. groupId: " + undoLogDo.getGroupId() +
+                        ", unitId: " + undoLogDo.getUnitId());
         // 写
         String undoLogSql = "INSERT INTO `"
-                + txcSettingFactory.undoLogTableName()
+                + txcLockSql.undoLogTableName()
                 + "`(gmt_create, gmt_modified, group_id, unit_id, rollback_info) values(?, ?, ?, ?, ?)";
         long count = queryRunner.insert(undoLogSql,
                 new ScalarHandler<>(),
@@ -152,13 +153,13 @@ public class TxcSqlExecutorImpl implements TxcSqlExecutor {
                 undoLogDo.getGroupId(),
                 undoLogDo.getUnitId(),
                 undoLogDo.getRollbackInfo());
-        txLogger.trace(undoLogDo.getGroupId(), undoLogDo.getUnitId(), "txc", "write undo log " + count);
+        txLogger.trace(undoLogDo.getGroupId(), undoLogDo.getUnitId(), "txc", "write undo log. log id: " + count);
     }
 
     @Override
     public void applyUndoLog(String groupId, String unitId) throws SQLException {
         log.debug("txc > execute undo log. groupId: {}, unitId: {}", groupId, unitId);
-        String undoLogSql = "SELECT * FROM `" + txcSettingFactory.undoLogTableName() +
+        String undoLogSql = "SELECT * FROM `" + txcLockSql.undoLogTableName() +
                 "` WHERE `group_id`=? and `unit_id`=?";
         Connection connection = null;
         try {
@@ -167,7 +168,7 @@ public class TxcSqlExecutorImpl implements TxcSqlExecutor {
             UndoLogDO undoLogDo = queryRunner.query(undoLogSql, new BeanHandler<>(UndoLogDO.class, processor), groupId, unitId);
             txLogger.trace(groupId, unitId, "txc", "undoLogDo sql " + undoLogDo);
             if (Objects.isNull(undoLogDo)) {
-                log.warn("txc . undo log not found! if in 'the ex caused mod' can be ignored.");
+                log.warn("txc . undo log not found! if in 'the ex caused mod (should enabled local transaction)' can be ignored.");
                 return;
             }
             RollbackInfo rollbackInfo = SqlUtils.blobToObject(undoLogDo.getRollbackInfo(), RollbackInfo.class);
@@ -205,7 +206,7 @@ public class TxcSqlExecutorImpl implements TxcSqlExecutor {
     public void clearUndoLog(String groupId, String unitId) throws SQLException {
         log.debug("txc > clear undo log. groupId: {}, unitId: {}", groupId, unitId);
         txLogger.trace(groupId, unitId, "txc", "clear undo log");
-        String cleanUndoLogSql = "DELETE FROM `" + txcSettingFactory.undoLogTableName() + "` WHERE group_id = ? and unit_id = ?";
+        String cleanUndoLogSql = "DELETE FROM `" + txcLockSql.undoLogTableName() + "` WHERE group_id = ? and unit_id = ?";
         queryRunner.update(cleanUndoLogSql, groupId, unitId);
     }
 }

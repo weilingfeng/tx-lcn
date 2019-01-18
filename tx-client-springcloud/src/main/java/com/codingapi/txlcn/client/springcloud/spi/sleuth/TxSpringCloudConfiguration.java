@@ -15,8 +15,8 @@
  */
 package com.codingapi.txlcn.client.springcloud.spi.sleuth;
 
-import com.codingapi.txlcn.spi.sleuth.listener.SleuthParamListener;
 import com.codingapi.txlcn.client.springcloud.spi.sleuth.ribbon.loadbalance.TXLCNZoneAvoidanceRule;
+import com.codingapi.txlcn.spi.sleuth.listener.SleuthParamListener;
 import com.netflix.loadbalancer.IRule;
 import lombok.Data;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -26,6 +26,7 @@ import org.springframework.cloud.client.serviceregistry.Registration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Scope;
 
 /**
  * Description:
@@ -45,6 +46,7 @@ public class TxSpringCloudConfiguration {
     @Bean
     @ConditionalOnMissingBean
     @ConditionalOnProperty(name = "tx-lcn.springcloud.loadbalance.enabled",havingValue = "true")
+    @Scope("prototype")
     public IRule ribbonRule(SleuthParamListener sleuthParamListener,
                             Registration registration){
         return new TXLCNZoneAvoidanceRule(sleuthParamListener, registration);
