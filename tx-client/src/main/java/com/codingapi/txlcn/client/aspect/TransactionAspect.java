@@ -87,8 +87,7 @@ public class TransactionAspect implements Ordered {
         return dtxLogicWeaver.runTransaction(dtxInfo, point::proceed);
     }
 
-    @Around("lcnTransactionPointcut() && !txcTransactionPointcut()" +
-            "&& !tccTransactionPointcut() && !txTransactionPointcut()")
+    @Around("lcnTransactionPointcut() && !txcTransactionPointcut() && !tccTransactionPointcut() && !txTransactionPointcut()")
     public Object runWithLcnTransaction(ProceedingJoinPoint point) throws Throwable {
         DTXInfo dtxInfo = DTXInfoPool.get(point);
         LcnTransaction lcnTransaction = dtxInfo.getBusinessMethod().getAnnotation(LcnTransaction.class);
@@ -97,8 +96,7 @@ public class TransactionAspect implements Ordered {
         return dtxLogicWeaver.runTransaction(dtxInfo, point::proceed);
     }
 
-    @Around("txcTransactionPointcut() && !lcnTransactionPointcut()" +
-            "&& !tccTransactionPointcut() && !txTransactionPointcut()")
+    @Around("txcTransactionPointcut() && !lcnTransactionPointcut() && !tccTransactionPointcut() && !txTransactionPointcut()")
     public Object runWithTxcTransaction(ProceedingJoinPoint point) throws Throwable {
         DTXInfo dtxInfo = DTXInfoPool.get(point);
         TxcTransaction txcTransaction = dtxInfo.getBusinessMethod().getAnnotation(TxcTransaction.class);
@@ -107,8 +105,7 @@ public class TransactionAspect implements Ordered {
         return dtxLogicWeaver.runTransaction(dtxInfo, point::proceed);
     }
 
-    @Around("tccTransactionPointcut() && !lcnTransactionPointcut()" +
-            "&& !txcTransactionPointcut() && !txTransactionPointcut()")
+    @Around("tccTransactionPointcut() && !lcnTransactionPointcut() && !txcTransactionPointcut() && !txTransactionPointcut()")
     public Object runWithTccTransaction(ProceedingJoinPoint point) throws Throwable {
         DTXInfo dtxInfo = DTXInfoPool.get(point);
         TccTransaction tccTransaction = dtxInfo.getBusinessMethod().getAnnotation(TccTransaction.class);
