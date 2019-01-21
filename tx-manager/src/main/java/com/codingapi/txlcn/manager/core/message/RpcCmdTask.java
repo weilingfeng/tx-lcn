@@ -24,6 +24,7 @@ import com.codingapi.txlcn.spi.message.dto.RpcCmd;
 import com.codingapi.txlcn.spi.message.exception.RpcException;
 import lombok.extern.slf4j.Slf4j;
 
+import java.io.Serializable;
 import java.util.Objects;
 
 /**
@@ -57,7 +58,7 @@ public class RpcCmdTask implements Runnable {
         RpcExecuteService rpcExecuteService = rpcBeanHelper.loadManagerService(transactionCmd.getType());
         MessageDto messageDto = null;
         try {
-            Object message = rpcExecuteService.execute(transactionCmd);
+            Serializable message = rpcExecuteService.execute(transactionCmd);
             messageDto = MessageCreator.notifyGroupOkResponse(message,action);
         } catch(Throwable e) {
             log.error(e.getMessage(), e);

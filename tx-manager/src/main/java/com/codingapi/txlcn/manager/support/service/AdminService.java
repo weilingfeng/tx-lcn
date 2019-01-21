@@ -18,6 +18,9 @@ package com.codingapi.txlcn.manager.support.service;
 import com.codingapi.txlcn.commons.exception.TxManagerException;
 import com.codingapi.txlcn.manager.support.restapi.model.*;
 
+import java.util.Date;
+import java.util.List;
+
 /**
  * Description:
  * Date: 2018/12/28
@@ -42,10 +45,13 @@ public interface AdminService {
      * @param limit     limit
      * @param groupId   groupId
      * @param tag       tag
+     * @param lTime startTime
+     * @param rTime stopTime
      * @param timeOrder 时间排序1 顺序 2 逆序
      * @return TxLogList
+     * @throws TxManagerException TxManagerException
      */
-    TxLogList txLogList(Integer page, Integer limit, String groupId, String tag, Integer timeOrder);
+    TxLogList txLogList(Integer page, Integer limit, String groupId, String tag, String lTime, String rTime, Integer timeOrder) throws TxManagerException;
 
     /**
      * 分布式事务统计信息
@@ -64,8 +70,8 @@ public interface AdminService {
     /**
      * 删除日志
      *
-     * @param deleteLogsReq 入参
-     * @throws TxManagerException
+     * @param deleteLogsReq deleteLogsReq
+     * @throws TxManagerException TxManagerException
      */
     void deleteLogs(DeleteLogsReq deleteLogsReq) throws TxManagerException;
 

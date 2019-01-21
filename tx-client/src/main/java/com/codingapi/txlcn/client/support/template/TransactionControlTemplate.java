@@ -22,7 +22,6 @@ import com.codingapi.txlcn.client.support.checking.DTXChecking;
 import com.codingapi.txlcn.client.support.checking.DTXExceptionHandler;
 import com.codingapi.txlcn.commons.bean.TransactionInfo;
 import com.codingapi.txlcn.commons.exception.BeforeBusinessException;
-import com.codingapi.txlcn.commons.exception.SerializerException;
 import com.codingapi.txlcn.commons.exception.TransactionClearException;
 import com.codingapi.txlcn.commons.exception.TxClientException;
 import com.codingapi.txlcn.commons.util.Transactions;
@@ -109,7 +108,7 @@ public class TransactionControlTemplate {
             // TxManager创建事务组
             MessageDto messageDto = rpcClient.request(remoteKey, MessageCreator.createGroup(groupId));
             if (MessageUtils.statusOk(messageDto)) {
-                log.info("{} > create transaction group: {}, txManager: {}.", transactionType, groupId, remoteKey);
+                log.debug("{} > create transaction group: {}, txManager: {}.", transactionType, groupId, remoteKey);
                 // 缓存发起方切面信息
                 aspectLogger.trace(groupId, unitId, transactionInfo);
                 return;
@@ -149,7 +148,7 @@ public class TransactionControlTemplate {
         try {
             MessageDto messageDto = rpcClient.request(managerKey, MessageCreator.joinGroup(joinGroupParams));
             if (MessageUtils.statusOk(messageDto)) {
-                log.info("{} > joined group.", transactionType);
+                log.debug("{} > joined group.", transactionType);
 
                 // 异步检测
                 dtxChecking.startDelayCheckingAsync(groupId, unitId, transactionType);
@@ -189,14 +188,13 @@ public class TransactionControlTemplate {
                     rpcClient.request(managerKey, MessageCreator.notifyGroup(notifyGroupParams));
             // 成功清理发起方事务
             if (MessageUtils.statusOk(messageDto)) {
-                log.info("{} > close transaction group.", transactionType);
+                log.debug("{} > close transaction group.", transactionType);
                 transactionCleanTemplate.clean(groupId, unitId, transactionType, state);
                 return;
             }
             // 关闭事务组失败
             dtxExceptionHandler.handleNotifyGroupBusinessException(
-                    Arrays.asList(notifyGroupParams, unitId, transactionType),
-                    SerializerContext.getInstance().deSerialize(messageDto.getBytes(), Throwable.class)
+                    Arrays.asList(notifyGroupParams, unitId, transactionType),messageDto.loadBean(Throwable.class)
             );
         } catch (TransactionClearException e) {
             log.error("clear exception", e);
@@ -204,12 +202,7 @@ public class TransactionControlTemplate {
             dtxExceptionHandler.handleNotifyGroupMessageException(
                     Arrays.asList(notifyGroupParams, unitId, transactionType), e
             );
-        } catch (SerializerException e) {
-            dtxExceptionHandler.handleNotifyGroupBusinessException(
-                    Arrays.asList(notifyGroupParams, unitId, transactionType), e
-            );
         }
-
         txLogger.trace(groupId, unitId, Transactions.TAG_TRANSACTION, "notify group exception " + state);
     }
 }

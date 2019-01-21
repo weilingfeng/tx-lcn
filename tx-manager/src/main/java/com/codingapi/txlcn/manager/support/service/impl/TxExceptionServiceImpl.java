@@ -16,7 +16,6 @@
 package com.codingapi.txlcn.manager.support.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
-import com.codingapi.txlcn.commons.exception.SerializerException;
 import com.codingapi.txlcn.commons.exception.TransactionStateException;
 import com.codingapi.txlcn.commons.exception.TxManagerException;
 import com.codingapi.txlcn.manager.core.message.MessageCreator;
@@ -151,11 +150,11 @@ public class TxExceptionServiceImpl implements TxExceptionService {
             for (String remoteKey : remoteKeys) {
                 MessageDto messageDto = rpcClient.request(remoteKey, MessageCreator.getAspectLog(groupId, unitId));
                 if (MessageUtils.statusOk(messageDto)) {
-                    return messageDto.loadData(JSONObject.class);
+                    return messageDto.loadBean(JSONObject.class);
                 }
             }
             throw new TransactionStateException("non exists aspect log", TransactionStateException.NON_ASPECT);
-        } catch (RpcException | SerializerException e) {
+        } catch (RpcException e) {
             throw new TransactionStateException(e, TransactionStateException.RPC_ERR);
         }
     }

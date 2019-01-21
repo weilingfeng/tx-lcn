@@ -25,7 +25,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
-import java.util.List;
 
 /**
  * Description:
@@ -57,6 +56,8 @@ public class AdminController {
      *
      * @param page  页码
      * @param limit 记录数
+     * @param extState extState
+     * @param registrar registrar
      * @return ExceptionList
      */
     @GetMapping({"/exceptions/{page}", "/exceptions", "/exceptions/{page}/{limit}"})
@@ -71,13 +72,13 @@ public class AdminController {
     /**
      * 删除异常信息
      *
-     * @param ids 异常信息标示
+     * @param deleteExceptions 异常信息标示
      * @return 操作结果
      * @throws TxManagerException TxManagerException
      */
-    @DeleteMapping("/exceptions")
-    public boolean deleteExceptions(@RequestBody List<Long> ids) throws TxManagerException {
-        txExceptionService.deleteExceptions(ids);
+    @PostMapping("/exceptions")
+    public boolean deleteExceptions(@RequestBody DeleteExceptions deleteExceptions) throws TxManagerException {
+        txExceptionService.deleteExceptions(deleteExceptions.getId());
         return true;
     }
 
@@ -107,8 +108,11 @@ public class AdminController {
      * @param limit     记录数
      * @param groupId   groupId
      * @param tag       tag
+     * @param lTime lTime
+     * @param rTime rtime
      * @param timeOrder timeOrder
      * @return TxLogList
+     * @throws TxManagerException TxManagerException
      */
     @GetMapping({"/logs/{page}", "/logs/{page}/{limit}", "/logs"})
     public TxLogList txLogList(
@@ -116,10 +120,10 @@ public class AdminController {
             @RequestParam(value = "limit", required = false) @PathVariable(value = "limit", required = false) Integer limit,
             @RequestParam(value = "groupId", required = false) String groupId,
             @RequestParam(value = "tag", required = false) String tag,
-            @RequestParam(value = "ld", required = false) Date lTime,
-            @RequestParam(value = "rd", required = false) Date rTime,
-            @RequestParam(value = "timeOrder", required = false) Integer timeOrder) {
-        return adminService.txLogList(page, limit, groupId, tag, timeOrder);
+            @RequestParam(value = "ld", required = false) String lTime,
+            @RequestParam(value = "rd", required = false) String rTime,
+            @RequestParam(value = "timeOrder", required = false) Integer timeOrder) throws TxManagerException {
+        return adminService.txLogList(page, limit, groupId, tag, lTime, rTime, timeOrder);
     }
 
     @GetMapping({"/app-mods/{page}", "/app-mods/{page}/{limit}", "/app-mods"})
@@ -132,9 +136,9 @@ public class AdminController {
     /**
      * 删除日志
      *
-     * @param deleteLogsReq
-     * @return
-     * @throws TxManagerException
+     * @param deleteLogsReq deleteLogsReq
+     * @return bool
+     * @throws TxManagerException TxManagerException
      */
     @DeleteMapping("/logs")
     public boolean deleteLogs(@RequestBody DeleteLogsReq deleteLogsReq) throws TxManagerException {

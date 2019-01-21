@@ -25,8 +25,6 @@ import com.codingapi.txlcn.client.support.cache.TransactionAttachmentCache;
 import com.codingapi.txlcn.commons.util.RandomUtils;
 import com.codingapi.txlcn.spi.sleuth.TracerHelper;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 import java.util.Objects;
 
@@ -37,7 +35,6 @@ import java.util.Objects;
  *
  * @author ujued
  */
-@Component
 @Slf4j
 public class DTXLogicWeaver {
 
@@ -47,7 +44,6 @@ public class DTXLogicWeaver {
 
     private final TransactionAttachmentCache transactionAttachmentCache;
 
-    @Autowired
     public DTXLogicWeaver(TracerHelper tracerHelper,
                           TXLCNTransactionServiceExecutor transactionServiceExecutor,
                           TransactionAttachmentCache transactionAttachmentCache) {
@@ -64,7 +60,8 @@ public class DTXLogicWeaver {
             return business.call();
         }
 
-        log.info("tx-unit start---->");
+        log.debug("tx-unit start---->");
+
         // 事务发起方判断
         boolean isTransactionStart = tracerHelper.getGroupId() == null;
 
@@ -96,7 +93,7 @@ public class DTXLogicWeaver {
             }
             transactionAttachmentCache.destroyContext(info.getGroupId());
             DTXLocal.makeNeverAppeared();
-            log.info("tx-unit end------>");
+            log.debug("tx-unit end------>");
         }
     }
 }

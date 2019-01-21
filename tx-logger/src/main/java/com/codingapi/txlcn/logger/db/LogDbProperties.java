@@ -18,20 +18,30 @@ package com.codingapi.txlcn.logger.db;
 import com.zaxxer.hikari.HikariConfig;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
+
+import java.util.Objects;
 
 /**
  * @author lorne
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
+@Slf4j
 public class LogDbProperties extends HikariConfig {
 
     private boolean enabled = false;
 
-    @Autowired
-    public LogDbProperties(DataSourceProperties dataSourceProperties){
+    @Autowired(required = false)
+    public LogDbProperties(DataSourceProperties dataSourceProperties) {
+        if (Objects.isNull(dataSourceProperties) ||
+                Objects.isNull(dataSourceProperties.getDriverClassName()) ||
+                Objects.isNull(dataSourceProperties.getUrl())) {
+            log.info("TxLogger used user's config.");
+            return;
+        }
         this.setDriverClassName(dataSourceProperties.getDriverClassName());
         this.setJdbcUrl(dataSourceProperties.getUrl());
         this.setUsername(dataSourceProperties.getUsername());
