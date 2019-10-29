@@ -11,7 +11,6 @@
 
     <artifactId>txlcn-common</artifactId>
 
-
     <dependencies>
         <dependency>
             <groupId>org.springframework</groupId>

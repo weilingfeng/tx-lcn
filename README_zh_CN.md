@@ -3,7 +3,7 @@
 [![Maven](https://img.shields.io/badge/endpoint.svg?url=https://bbs.txlcn.org/maven-central)](https://bbs.txlcn.org/maven-list)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://github.com/codingapi/tx-lcn/blob/master/LICENSE)
 [![Gitter](https://badges.gitter.im/codingapi/tx-lcn.svg)](https://gitter.im/codingapi/tx-lcn?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
-
+[![警报](http://sonar.yizhishang.com/api/project_badges/measure?project=com.codingapi.txlcn%3Atx-lcn&metric=alert_status)](http://sonar.yizhishang.com/dashboard?id=com.codingapi.txlcn%3Atx-lcn)
 
 ## 项目介绍
 
@@ -23,7 +23,7 @@ TCC忽略不说。LCN与TXC两种框架实现的事务模式到底那个更优�
 3. 支持LCN TXC TCC 三种事务模式，且可混合支持。
 4. 性能较优秀，去掉了线程等待机制，提高吞吐量。
 
-基于官方5.0.2.RELEASE做的修改：
+> 基于官方5.0.2.RELEASE做的修改：
 1. 通知客户端重新连接tx-manager
 2. 修改获取模块名称方法，保证事务通知到具体的参与方，而避免根据应用名称模糊随机搜索出没有参与事务的应用出错
 3. 修改客户端重连次数为3，等待时间为3S

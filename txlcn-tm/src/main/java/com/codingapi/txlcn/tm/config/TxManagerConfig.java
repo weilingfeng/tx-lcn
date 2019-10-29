@@ -50,7 +50,7 @@ public class TxManagerConfig {
     /**
      * netty heart check time (ms)
      */
-    private long heartTime = 5 * 60 * 1000;
+    private long heartTime = 5 * 60 * 1000L;
 
     /**
      * 事务处理并发等级
@@ -65,7 +65,7 @@ public class TxManagerConfig {
     /**
      * 分布式事务超时时间(ms)
      */
-    private long dtxTime = 8 * 1000;
+    private long dtxTime = 8 * 1000L;
 
     /**
      * 后台密码

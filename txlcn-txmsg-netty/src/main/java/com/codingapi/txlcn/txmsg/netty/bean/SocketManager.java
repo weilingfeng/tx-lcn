@@ -47,7 +47,7 @@ public class SocketManager {
 
     private static SocketManager manager = null;
 
-    private long attrDelayTime = 1000 * 60;
+    private long attrDelayTime = 1000L * 60;
 
     private SocketManager() {
         channels = new DefaultChannelGroup(GlobalEventExecutor.INSTANCE);

@@ -98,7 +98,7 @@ public class NettyClientRetryHandler extends ChannelInboundHandlerAdapter {
 
         if (cause instanceof ConnectException) {
             int size = SocketManager.getInstance().currentSize();
-            Thread.sleep(1000 * 15);
+            Thread.sleep(1000L * 15);
             log.error("current size:{}  ", size);
             log.error("try connect tx-manager:{} ", ctx.channel().remoteAddress());
             NettyRpcClientInitializer.reConnect(ctx.channel().remoteAddress());

@@ -42,7 +42,7 @@ public class TxClientConfig {
 
     public TxClientConfig() {
         this.dtxAspectOrder = 0;
-        this.dtxTime = 30 * 1000;
+        this.dtxTime = 30 * 1000L;
     }
 
     /**
