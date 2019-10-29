@@ -1,5 +1,5 @@
 kind: pipeline
-#type: exec
+type: exec
 name: default
 
 trigger:
@@ -71,8 +71,8 @@ steps:
     - mvn clean deploy -s settings.xml -DskipTests -U
   when:
     event: push
-#  depends_on:
-#    - build-settings
+  depends_on:
+  - build-settings
 
 - name: docker
   image: 192.168.110.129:5000/plugins/docker:latest
@@ -89,8 +89,8 @@ steps:
     dockerfile: ./Dockerfile
   when:
     event: push
-#  depends_on:
-#    - maven
+  depends_on:
+  - maven
 
 volumes:
 - name: MavenCache
