@@ -5,8 +5,7 @@ name: default
 trigger:
   branch:
   - master
-  - gpo-tx-lcn
-  - feature/*
+  - 1.0.0.RELEASE
   event:
 #  - tag
   - push

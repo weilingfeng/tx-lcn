@@ -32,7 +32,7 @@ public class SerializerContext implements ISerializer {
         protostuffSerializer = new ProtostuffSerializer();
     }
 
-    private static SerializerContext context = null;
+    private static volatile SerializerContext context = null;
 
     public static SerializerContext getInstance() {
         if (context == null) {

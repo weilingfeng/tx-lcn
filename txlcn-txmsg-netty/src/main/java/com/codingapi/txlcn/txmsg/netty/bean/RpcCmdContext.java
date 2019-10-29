@@ -38,7 +38,7 @@ public class RpcCmdContext {
     
     private long waitTime = 1;
     
-    private static RpcCmdContext context = null;
+    private static volatile RpcCmdContext context = null;
     
     private Map<String, RpcContent> map;
     
