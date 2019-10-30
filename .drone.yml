@@ -1,5 +1,5 @@
 kind: pipeline
-type: exec
+#type: exec
 name: default
 
 trigger:
