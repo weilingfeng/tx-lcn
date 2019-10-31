@@ -66,6 +66,10 @@ steps:
   - name: MavenCache
     path: /drone/src/repo
   commands:
+    - cat /etc/resolv.conf
+    - echo '####'
+    - cat /etc/hosts
+    - echo '###'
     - cat settings.xml
     - mvn clean deploy -s settings.xml -DskipTests -U
   when:
