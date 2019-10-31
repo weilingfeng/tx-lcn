@@ -1,5 +1,4 @@
 kind: pipeline
-#type: exec
 name: default
 
 trigger:
@@ -15,8 +14,8 @@ steps:
 - name: code-analysis
   image: 192.168.110.129:5000/aosapps/drone-sonar-plugin:latest
   pull: IfNotPresent
-  extra_hosts:
-    - "sonar.yizhishang.com:192.168.110.129"
+#  extra_hosts:
+#    - "sonar.yizhishang.com:192.168.110.129"
   settings:
     sonar_host:
       from_secret: sonar_host
@@ -56,8 +55,8 @@ steps:
 - name: maven
   image: 192.168.110.129:5000/maven:3-jdk-8
   pull: IfNotPresent
-  extra_hosts:
-    - "nexus.yizhishang.com:192.168.110.129"
+#  extra_hosts:
+#    - "nexus.yizhishang.com:192.168.110.129"
   environment:
     USERNAME:
       from_secret: username
