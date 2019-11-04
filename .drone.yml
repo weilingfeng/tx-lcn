@@ -14,7 +14,7 @@ steps:
 - name: code-analysis
   image: 192.168.110.129:5000/aosapps/drone-sonar-plugin:latest
   pull: IfNotPresent
-  extral_hosts:
+  extra_hosts:
     - "nexus.yizhishang.com: 192.168.110.129"
   settings:
     sonar_host:
@@ -62,7 +62,7 @@ steps:
   volumes:
   - name: MavenCache
     path: /drone/src/repo
-  extral_hosts:
+  extra_hosts:
     - "nexus.yizhishang.com: 192.168.110.129"
   commands:
     - cat /etc/resolv.conf
