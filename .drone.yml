@@ -99,3 +99,7 @@ volumes:
 - name: MavenCache
   host:
     path: /mnt/tmp/maven
+
+networks:
+  default:
+    driver: bridge
