@@ -15,6 +15,7 @@ steps:
   image: 192.168.110.129:5000/aosapps/drone-sonar-plugin:latest
   pull: IfNotPresent
   custom_dns: 192.168.110.129
+  settings:
     sonar_host:
       from_secret: sonar_host
     sonar_token: 2015c55e0e65f0d4145dd1b8a9d8fff4d8b73be5
