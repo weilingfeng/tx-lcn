@@ -14,12 +14,10 @@ steps:
 - name: code-analysis
   image: 192.168.110.129:5000/aosapps/drone-sonar-plugin:latest
   pull: IfNotPresent
-  settings:
-    custom_dns: 192.168.110.129
+  custom_dns: 192.168.110.129
     sonar_host:
       from_secret: sonar_host
     sonar_token: 2015c55e0e65f0d4145dd1b8a9d8fff4d8b73be5
-#      from_secret: sonar_token
     level: debug
     showProfiling: true
 
@@ -54,6 +52,7 @@ steps:
 - name: maven
   image: 192.168.110.129:5000/maven:3-jdk-8
   pull: IfNotPresent
+  custom_dns: 192.168.110.129
   environment:
     USERNAME:
       from_secret: username
@@ -62,8 +61,6 @@ steps:
   volumes:
   - name: MavenCache
     path: /drone/src/repo
-  settings:
-    custom_dns: 192.168.110.129
   commands:
     - cat /etc/resolv.conf
     - echo '####'
