@@ -53,10 +53,10 @@
             </appender>
 
             <root>
-                <appender-ref ref="async" />
+                <appender-ref ref="fluent" />
             </root>
             <logger name="com.codingapi.txlcn.tm" additivity="false" level="${logBusinessLevel}">
-                <appender-ref ref="async"/>
+                <appender-ref ref="fluent"/>
             </logger>
         </then>
     </if>
