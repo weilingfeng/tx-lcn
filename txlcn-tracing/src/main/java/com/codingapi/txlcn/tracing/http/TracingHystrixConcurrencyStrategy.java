@@ -12,19 +12,19 @@ import com.netflix.hystrix.strategy.executionhook.HystrixCommandExecutionHook;
 import com.netflix.hystrix.strategy.metrics.HystrixMetricsPublisher;
 import com.netflix.hystrix.strategy.properties.HystrixPropertiesStrategy;
 import com.netflix.hystrix.strategy.properties.HystrixProperty;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
-import org.springframework.stereotype.Component;
-
 import java.util.Map;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
+import org.springframework.stereotype.Component;
+import org.springframework.web.context.request.RequestAttributes;
+import org.springframework.web.context.request.RequestContextHolder;
 
 /**
- * Description:
- * Date: 19-2-15 下午1:28
+ * Description: Date: 19-2-15 下午1:28
  *
  * @author ujued
  */
@@ -67,22 +67,45 @@ public class TracingHystrixConcurrencyStrategy extends HystrixConcurrencyStrateg
     @Override
     public <T> Callable<T> wrapCallable(Callable<T> callable) {
         Map<String, String> fields = TracingContext.tracing().fields();
+        RequestAttributes requestAttributes = RequestContextHolder.getRequestAttributes();
+
         return () -> {
             boolean isReInitTracingContext = true;
             try {
                 if (TracingContext.tracing().hasGroup()) {
                     isReInitTracingContext = false;
-                    return delegate.wrapCallable(callable).call();
+                    return delegate.wrapCallable(new WrappedCallable<>(callable, requestAttributes)).call();
                 }
                 log.debug("Hystrix transfer tracing.");
                 TracingContext.init(fields);
-                return delegate.wrapCallable(callable).call();
+                return delegate.wrapCallable(new WrappedCallable<>(callable, requestAttributes)).call();
             } finally {
                 if (isReInitTracingContext) {
                     TracingContext.tracing().destroy();
                 }
             }
         };
+    }
+
+    static class WrappedCallable<T> implements Callable<T> {
+
+        private final Callable<T> target;
+        private final RequestAttributes requestAttributes;
+
+        public WrappedCallable(Callable<T> target, RequestAttributes requestAttributes) {
+            this.target = target;
+            this.requestAttributes = requestAttributes;
+        }
+
+        @Override
+        public T call() throws Exception {
+            try {
+                RequestContextHolder.setRequestAttributes(requestAttributes);
+                return target.call();
+            } finally {
+                RequestContextHolder.resetRequestAttributes();
+            }
+        }
     }
 
     @Override
