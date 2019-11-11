@@ -42,7 +42,7 @@ steps:
         registryUrl: 192.168.110.129:5000
     mirrors:
     - id: maven-public
-      url: http://192.168.110.129:8091/repository/maven-public/
+      url: http://nexus.yizhishang.com/repository/maven-public/
       mirrorOf: central
     active_profiles:
       - drone
@@ -59,13 +59,8 @@ steps:
   - name: MavenCache
     path: /drone/src/repo
   extra_hosts:
-    - "nexus.yizhishang.com: 192.168.110.129"
+    - "nexus.yizhishang.com:192.168.110.129"
   commands:
-    - cat /etc/resolv.conf
-    - echo '####'
-    - cat /etc/hosts
-    - echo '###'
-    - cat settings.xml
     - mvn clean deploy -s settings.xml -DskipTests -U
   when:
     event: push

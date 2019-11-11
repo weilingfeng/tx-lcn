@@ -3,10 +3,14 @@
 
     <!-- 读取spring.application.name中的属性来生成日志文件名 -->
     <springProperty scope="context" name="springAppName" source="spring.application.name" defaultValue="tx-manager"/>
-    <springProperty scope="context" name="springProfile" source="spring.profiles.active" />
+    <springProperty scope="context" name="springProfile" source="spring.profiles.active"/>
     <springProperty scope="context" name="collect" source="logging.collect" defaultValue="0"/>
-    <springProperty scope="context" name="fluentHost" source="logging.fluent.host" />
-    <springProperty scope="context" name="fluentPort" source="logging.fluent.port" />
+
+    <!-- 日志路径: 尽量别用绝对路径，如果带参数不同容器路径解释可能不同,以下配置参数在pom.xml里 -->
+    <springProperty scope="context" name="logPath" source="logging.path" defaultValue="/logs"/>
+
+    <!-- 日志文件大小,超过这个大小将被压缩 -->
+    <springProperty scope="context" name="logMaxSize" source="logging.file.max-size" defaultValue="10MB"/>
 
     <!-- 业务日志级别 -->
     <springProperty scope="context" name="logBusinessLevel" source="logger.business.level" defaultValue="DEBUG"/>
@@ -23,43 +27,49 @@
         </encoder>
     </appender>
 
-    <logger name="com.codingapi.txlcn.tm" additivity="false" level="${logBusinessLevel}">
-        <appender-ref ref="console" />
-    </logger>
+    <appender name="rollingFile" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${logPath}/${springAppName}/server.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${logPath}/${springAppName}/archive/server.%d{yyyy-MM-dd}.%i.log.zip</fileNamePattern>
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>${logMaxSize}</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+            <maxHistory>7</maxHistory>
+        </rollingPolicy>
 
-    <root level="INFO">
-        <appender-ref ref="console" />
-    </root>
+        <encoder class="net.logstash.logback.encoder.LogstashEncoder" charset="UTF-8"/>
+    </appender>
 
-    <if condition='"1".equals(property("collect"))'>
+    <appender name="async-console" class="ch.qos.logback.classic.AsyncAppender">
+        <appender-ref ref="console"/>
+        <includeCallerData>true</includeCallerData>
+    </appender>
+    <appender name="async-rollingFile" class="ch.qos.logback.classic.AsyncAppender">
+        <appender-ref ref="rollingFile"/>
+        <includeCallerData>true</includeCallerData>
+    </appender>
+
+    <if condition='"loc".equals(property("springProfile")) || "0".equals(property("collect"))'>
         <then>
-            <appender name="fluent" class="ch.qos.logback.more.appenders.DataFluentAppender">
-                <tag>${springAppName}</tag>
-                <label>${springProfile}</label>
-                <remoteHost>${fluentHost}</remoteHost>
-                <port>${fluentPort}</port>
-                <useEventTime>true</useEventTime>
-                <encoder class="net.logstash.logback.encoder.LogstashEncoder"/>
-            </appender>
-
-            <!-- 异步输出 -->
-            <appender name ="async" class= "ch.qos.logback.classic.AsyncAppender">
-                <!-- 不丢失日志.默认的,如果队列的80%已满,则会丢弃TRACT、DEBUG、INFO级别的日志 -->
-                <discardingThreshold >0</discardingThreshold>
-                <!-- 更改默认的队列的深度,该值会影响性能.默认值为256 -->
-                <queueSize>512</queueSize>
-                <neverBlock>true</neverBlock>
-                <!-- 添加附加的appender,最多只能添加一个 -->
-                <appender-ref ref ="async"/>
-            </appender>
-
-            <root>
-                <appender-ref ref="async" />
-            </root>
             <logger name="com.codingapi.txlcn.tm" additivity="false" level="${logBusinessLevel}">
-                <appender-ref ref="async"/>
+                <appender-ref ref="console"/>
             </logger>
+
+            <root level="INFO">
+                <appender-ref ref="console"/>
+            </root>
         </then>
+        <else>
+            <logger name="com.codingapi.txlcn.tm" additivity="false" level="${logBusinessLevel}">
+                <appender-ref ref="async-console"/>
+                <appender-ref ref="async-rollingFile"/>
+            </logger>
+
+            <root level="INFO">
+                <appender-ref ref="async-console"/>
+                <appender-ref ref="async-rollingFile"/>
+            </root>
+        </else>
     </if>
 
 </configuration>
