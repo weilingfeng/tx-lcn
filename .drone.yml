@@ -54,9 +54,9 @@ steps:
   pull: IfNotPresent
   environment:
     USERNAME:
-      from_secret: username
+      from_secret: NEXUS_USERNAME
     PASSWORD:
-      from_secret: password
+      from_secret: NEXUS_PASSWORD
   volumes:
   - name: MavenCache
     path: /drone/src/repo
@@ -77,9 +77,9 @@ steps:
     registry: docker-registry.yizhishang.com
     insecure: true
     username:
-      from_secret: username
+      from_secret: DOCKER_USERNAME
     password:
-      from_secret: password
+      from_secret: DOCKER_PASSWORD
     repo: docker-registry.yizhishang.com/yizhishang/tx-manager
     dockerfile: ./Dockerfile
   when:
