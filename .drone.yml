@@ -11,7 +11,7 @@ trigger:
 steps:
 
 - name: code-analysis
-  image: 192.168.110.129:5000/aosapps/drone-sonar-plugin:latest
+  image: docker-registry.yizhishang.com/aosapps/drone-sonar-plugin:latest
   pull: IfNotPresent
   extra_hosts:
     - "sonar.yizhishang.com:192.168.110.129"
@@ -22,7 +22,7 @@ steps:
     showProfiling: true
 
 - name: build-settings
-  image: 192.168.110.129:5000/knives/drone-maven-setting:latest
+  image: docker-registry.yizhishang.com/knives/drone-maven-setting:latest
   settings:
     servers:
     - id: maven-public
@@ -39,7 +39,7 @@ steps:
       properties:
         dockerHost: http://192.168.110.129:2375
         registryPrefix: yizhishang
-        registryUrl: 192.168.110.129:5000
+        registryUrl: docker-registry.yizhishang.com
     mirrors:
     - id: maven-public
       url: http://nexus.yizhishang.com/repository/maven-public/
@@ -48,7 +48,7 @@ steps:
       - drone
 
 - name: maven
-  image: 192.168.110.129:5000/maven:3-jdk-8
+  image: docker-registry.yizhishang.com/maven:3-jdk-8
   pull: IfNotPresent
   environment:
     USERNAME:
@@ -58,8 +58,8 @@ steps:
   volumes:
   - name: MavenCache
     path: /drone/src/repo
-  extra_hosts:
-    - "nexus.yizhishang.com:192.168.110.129"
+#  extra_hosts:
+#    - "nexus.yizhishang.com:192.168.110.129"
   commands:
     - mvn clean deploy -s settings.xml -DskipTests -U
   when:
@@ -68,17 +68,17 @@ steps:
   - build-settings
 
 - name: docker
-  image: 192.168.110.129:5000/plugins/docker:latest
+  image: docker-registry.yizhishang.com/plugins/docker:latest
   pull: IfNotPresent
   privileged: true
   settings:
-    registry: 192.168.110.129:5000
+    registry: docker-registry.yizhishang.com
     insecure: true
     username:
       from_secret: username
     password:
       from_secret: password
-    repo: 192.168.110.129:5000/yizhishang/tx-manager
+    repo: docker-registry.yizhishang.com/yizhishang/tx-manager
     dockerfile: ./Dockerfile
   when:
     event: push
