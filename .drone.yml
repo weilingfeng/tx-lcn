@@ -20,6 +20,8 @@ steps:
     sonar_token: 2015c55e0e65f0d4145dd1b8a9d8fff4d8b73be5
     level: debug
     showProfiling: true
+  when:
+    event: tag
 
 - name: build-settings
   image: docker-registry.yizhishang.com/knives/drone-maven-setting:latest
