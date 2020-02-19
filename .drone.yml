@@ -60,8 +60,6 @@ steps:
   volumes:
   - name: MavenCache
     path: /drone/src/repo
-#  extra_hosts:
-#    - "nexus.yizhishang.com:192.168.110.129"
   commands:
     - mvn clean deploy -s settings.xml -DskipTests -U
   when:
