@@ -1,6 +1,9 @@
 kind: pipeline
 name: default
 
+clone:
+  depth: 1
+
 trigger:
   branch:
   - master
