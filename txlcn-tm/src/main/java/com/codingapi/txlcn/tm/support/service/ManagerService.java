@@ -16,8 +16,8 @@
 package com.codingapi.txlcn.tm.support.service;
 
 import com.codingapi.txlcn.common.exception.TxManagerException;
-import com.codingapi.txlcn.txmsg.params.NotifyConnectParams;
 import com.codingapi.txlcn.txmsg.exception.RpcException;
+import com.codingapi.txlcn.txmsg.params.NotifyConnectParams;
 
 /**
  * Description:

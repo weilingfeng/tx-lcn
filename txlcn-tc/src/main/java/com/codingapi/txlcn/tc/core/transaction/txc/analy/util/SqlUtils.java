@@ -17,9 +17,9 @@ package com.codingapi.txlcn.tc.core.transaction.txc.analy.util;
 
 import com.codingapi.txlcn.common.exception.SerializerException;
 import com.codingapi.txlcn.common.util.serializer.SerializerContext;
-import com.codingapi.txlcn.tc.core.transaction.txc.analy.def.bean.ModifiedRecord;
 import com.codingapi.txlcn.tc.core.transaction.txc.analy.def.bean.FieldCluster;
 import com.codingapi.txlcn.tc.core.transaction.txc.analy.def.bean.FieldValue;
+import com.codingapi.txlcn.tc.core.transaction.txc.analy.def.bean.ModifiedRecord;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

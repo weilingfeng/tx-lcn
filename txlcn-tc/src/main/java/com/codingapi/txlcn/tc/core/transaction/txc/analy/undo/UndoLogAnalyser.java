@@ -15,9 +15,9 @@
  */
 package com.codingapi.txlcn.tc.core.transaction.txc.analy.undo;
 
-import com.codingapi.txlcn.tc.core.transaction.txc.analy.def.bean.StatementInfo;
 import com.codingapi.txlcn.tc.core.transaction.txc.analy.def.bean.FieldCluster;
 import com.codingapi.txlcn.tc.core.transaction.txc.analy.def.bean.FieldValue;
+import com.codingapi.txlcn.tc.core.transaction.txc.analy.def.bean.StatementInfo;
 import com.codingapi.txlcn.tc.core.transaction.txc.analy.util.SqlUtils;
 
 import java.util.Arrays;

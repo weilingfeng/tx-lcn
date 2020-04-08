@@ -15,8 +15,8 @@
  */
 package com.codingapi.txlcn.tm.support.restapi.auth;
 
-import com.codingapi.txlcn.tm.core.storage.FastStorage;
 import com.codingapi.txlcn.common.exception.FastStorageException;
+import com.codingapi.txlcn.tm.core.storage.FastStorage;
 import com.codingapi.txlcn.tm.support.restapi.auth.sauth.token.TokenStorage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

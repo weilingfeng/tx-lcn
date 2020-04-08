@@ -15,8 +15,6 @@
  */
 package com.codingapi.txlcn.tc.support;
 
-import com.codingapi.txlcn.tc.core.DTXLocalContext;
-
 /**
  * Description: 将会在未来版本废弃。推荐使用 {@link DTXUserControls}
  * Date: 19-1-16 下午4:21
