@@ -90,6 +90,8 @@ steps:
     container: tx-manager
     repo: docker-registry.yizhishang.com/yizhishang/tx-manager
     tag: ${DRONE_BRANCH}
+  depends_on:
+    - docker
 
 volumes:
 - name: MavenCache
