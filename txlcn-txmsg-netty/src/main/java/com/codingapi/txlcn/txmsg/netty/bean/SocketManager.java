@@ -59,6 +59,7 @@ public class SocketManager {
             try {
                 executorService.awaitTermination(10, TimeUnit.MINUTES);
             } catch (InterruptedException ignored) {
+                log.warn("SocketManager: ##", ignored);
             }
         }));
     }
@@ -186,26 +187,26 @@ public class SocketManager {
     /**
      * 绑定连接数据
      *
-     * @param remoteKey  远程标识
-     * @param appName  模块名称
+     * @param remoteKey 远程标识
+     * @param appName   模块名称
      * @param labelName TC标识名称
      */
-    public void bindModuleName(String remoteKey, String appName,String labelName) throws RpcException{
+    public void bindModuleName(String remoteKey, String appName, String labelName) throws RpcException {
         AppInfo appInfo = new AppInfo();
         appInfo.setAppName(appName);
         appInfo.setLabelName(labelName);
         appInfo.setCreateTime(new Date());
-        if(containsLabelName(labelName)){
-            throw new RpcException("labelName:"+labelName+" has exist.");
+        if (containsLabelName(labelName)) {
+            throw new RpcException("labelName:" + labelName + " has exist.");
         }
         appNames.put(remoteKey, appInfo);
     }
 
-    public boolean containsLabelName(String moduleName){
-        Set<String> keys =  appNames.keySet();
-        for(String key:keys){
-            AppInfo appInfo = appNames.get(key);
-            if(moduleName.equals(appInfo.getLabelName())){
+    public boolean containsLabelName(String moduleName) {
+        Set<String> keys = appNames.keySet();
+        for (Iterator iterator = keys.iterator(); iterator.hasNext(); ) {
+            AppInfo appInfo = appNames.get(iterator.next());
+            if (moduleName.equals(appInfo.getLabelName())) {
                 return true;
             }
         }
