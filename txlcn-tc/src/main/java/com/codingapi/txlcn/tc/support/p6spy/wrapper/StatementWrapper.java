@@ -64,7 +64,6 @@ public class StatementWrapper extends AbstractWrapper implements Statement {
             e = sqle;
             throw e;
         } finally {
-            delegate.close();
             eventListener.onAfterGetResultSet(statementInformation, System.nanoTime() - start, e);
         }
     }
