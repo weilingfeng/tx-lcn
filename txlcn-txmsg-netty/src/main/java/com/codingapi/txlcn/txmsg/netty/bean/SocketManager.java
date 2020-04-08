@@ -204,8 +204,8 @@ public class SocketManager {
 
     public boolean containsLabelName(String moduleName) {
         Set<String> keys = appNames.keySet();
-        for (Iterator iterator = keys.iterator(); iterator.hasNext(); ) {
-            AppInfo appInfo = appNames.get(iterator.next());
+        for (String key : keys) {
+            AppInfo appInfo = appNames.get(key);
             if (moduleName.equals(appInfo.getLabelName())) {
                 return true;
             }
