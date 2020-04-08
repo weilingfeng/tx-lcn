@@ -69,6 +69,7 @@ public class PreparedStatementWrapper extends StatementWrapper implements Prepar
             e = sqle;
             throw e;
         } finally {
+            delegate.close();
             eventListener.onAfterExecuteQuery(statementInformation, System.nanoTime() - start, e);
         }
     }
