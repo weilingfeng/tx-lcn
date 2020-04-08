@@ -37,7 +37,7 @@ public class ApplicationInformation {
     /**
      * 模块标识
      *
-     * @param environment Spring Env
+     * @param environment      Spring Env
      * @param serverProperties serverProperties
      * @return 标识
      */
@@ -66,10 +66,8 @@ public class ApplicationInformation {
                     InetAddress inetAddress = enumIpAddr.nextElement();
                     if (!inetAddress.isLoopbackAddress()) {
                         String ipAddress = inetAddress.getHostAddress();
-                        if (!ipAddress.contains("::") && !ipAddress.contains("0:0:") && !ipAddress.contains("fe80")) {
-                            if (!"127.0.0.1".equals(ip)) {
-                                ip = ipAddress;
-                            }
+                        if (!ipAddress.contains("::") && !ipAddress.contains("0:0:") && !ipAddress.contains("fe80") && !"127.0.0.1".equals(ip)) {
+                            ip = ipAddress;
                         }
                     }
                 }
