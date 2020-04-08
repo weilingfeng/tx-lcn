@@ -104,7 +104,6 @@ public class SimpleDTXChecking implements DTXChecking, DisposableBean {
             } catch (RpcException e) {
                 onAskTransactionStateException(groupId, unitId, transactionType);
             } catch (TransactionClearException | InterruptedException e) {
-                log.error("DTX检测错误", e);
                 txLogger.error(this.getClass().getSimpleName(), "{} clean transaction error.", transactionType);
             }
         }, clientConfig.getDtxTime(), TimeUnit.MILLISECONDS);
@@ -139,8 +138,7 @@ public class SimpleDTXChecking implements DTXChecking, DisposableBean {
         try {
             // for non over tasks.
             scheduledExecutorService.awaitTermination(6, TimeUnit.SECONDS);
-        } catch (InterruptedException e) {
-            log.warn("DTX检测错误", e);
+        } catch (InterruptedException ignored) {
         }
     }
 }
