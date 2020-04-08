@@ -52,7 +52,8 @@ public class AsyncH2DBAspectLogger implements AspectLogger {
             executorService.shutdown();
             try {
                 executorService.awaitTermination(6, TimeUnit.SECONDS);
-            } catch (InterruptedException ignored) {
+            } catch (InterruptedException e) {
+                log.warn("DTX检测错误", e);
             }
         }));
     }

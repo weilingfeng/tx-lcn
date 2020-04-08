@@ -23,75 +23,75 @@ steps:
     level: debug
     showProfiling: true
 
-- name: build-settings
-  image: docker-registry.yizhishang.com/knives/drone-maven-setting:latest
-  settings:
-    servers:
-    - id: maven-public
-      username: admin
-      password: root
-    - id: maven-releases
-      username: admin
-      password: root
-    - id: maven-snapshots
-      username: $${env.USERNAME}
-      password: $${env.PASSWORD}
-    mirrors:
-    - id: maven-public
-      url: http://nexus.yizhishang.com/repository/maven-public/
-      mirrorOf: central
-
-- name: maven
-  image: docker-registry.yizhishang.com/maven:3-jdk-8
-  pull: IfNotPresent
-  environment:
-    USERNAME:
-      from_secret: username
-    PASSWORD:
-      from_secret: password
-  volumes:
-  - name: MavenCache
-    path: /drone/src/repo
-  commands:
-    - mvn clean deploy -s settings.xml -DskipTests -U
-  when:
-    event: push
-  depends_on:
-  - build-settings
-
-- name: docker
-  image: docker-registry.yizhishang.com/plugins/docker:latest
-  pull: IfNotPresent
-  privileged: true
-  settings:
-    registry: docker-registry.yizhishang.com
-    insecure: true
-    username:
-      from_secret: username
-    password:
-      from_secret: password
-    repo: docker-registry.yizhishang.com/yizhishang/tx-manager
-    tag:
-      - ${DRONE_BRANCH}
-  when:
-    event: push
-  depends_on:
-  - maven
-
-- name: pod-update
-  image: docker-registry.yizhishang.com/drone-kubernetes:latest
-  settings:
-    kubernetes_server:
-      from_secret: api_server
-    kubernetes_token:
-      from_secret: kubernetes_token
-    namespace: yizhishang
-    deployment: tx-manager
-    container: tx-manager
-    repo: docker-registry.yizhishang.com/yizhishang/tx-manager
-    tag: ${DRONE_BRANCH}
-  depends_on:
-    - docker
+#- name: build-settings
+#  image: docker-registry.yizhishang.com/knives/drone-maven-setting:latest
+#  settings:
+#    servers:
+#    - id: maven-public
+#      username: admin
+#      password: root
+#    - id: maven-releases
+#      username: admin
+#      password: root
+#    - id: maven-snapshots
+#      username: $${env.USERNAME}
+#      password: $${env.PASSWORD}
+#    mirrors:
+#    - id: maven-public
+#      url: http://nexus.yizhishang.com/repository/maven-public/
+#      mirrorOf: central
+#
+#- name: maven
+#  image: docker-registry.yizhishang.com/maven:3-jdk-8
+#  pull: IfNotPresent
+#  environment:
+#    USERNAME:
+#      from_secret: username
+#    PASSWORD:
+#      from_secret: password
+#  volumes:
+#  - name: MavenCache
+#    path: /drone/src/repo
+#  commands:
+#    - mvn clean deploy -s settings.xml -DskipTests -U
+#  when:
+#    event: push
+#  depends_on:
+#  - build-settings
+#
+#- name: docker
+#  image: docker-registry.yizhishang.com/plugins/docker:latest
+#  pull: IfNotPresent
+#  privileged: true
+#  settings:
+#    registry: docker-registry.yizhishang.com
+#    insecure: true
+#    username:
+#      from_secret: username
+#    password:
+#      from_secret: password
+#    repo: docker-registry.yizhishang.com/yizhishang/tx-manager
+#    tag:
+#      - ${DRONE_BRANCH}
+#  when:
+#    event: push
+#  depends_on:
+#  - maven
+#
+#- name: pod-update
+#  image: docker-registry.yizhishang.com/drone-kubernetes:latest
+#  settings:
+#    kubernetes_server:
+#      from_secret: api_server
+#    kubernetes_token:
+#      from_secret: kubernetes_token
+#    namespace: yizhishang
+#    deployment: tx-manager
+#    container: tx-manager
+#    repo: docker-registry.yizhishang.com/yizhishang/tx-manager
+#    tag: ${DRONE_BRANCH}
+#  depends_on:
+#    - docker
 
 volumes:
 - name: MavenCache
