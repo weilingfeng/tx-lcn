@@ -70,18 +70,6 @@ public class PreparedStatementWrapper extends StatementWrapper implements Prepar
         }finally {
             eventListener.onAfterExecuteQuery(statementInformation, System.nanoTime() - start, e);
         }
-
-//        ResultSet bakResultSet;
-//        try {
-//            eventListener.onBeforeExecuteQuery(statementInformation);
-//            ResultSet resultSet = delegate.executeQuery();
-//            return ResultSetWrapper.wrap(resultSet, new ResultSetInformation(statementInformation), eventListener);
-//        } catch (SQLException sqle) {
-//            e = sqle;
-//            throw e;
-//        } finally {
-//            eventListener.onAfterExecuteQuery(statementInformation, System.nanoTime() - start, e);
-//        }
     }
 
     @Override
