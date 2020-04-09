@@ -228,7 +228,6 @@ public abstract class Maps {
 
         @Override
         public Set<Entry<K, V>> entrySet() {
-            int size = size();
             Set<Entry<K, V>> entries = new HashSet<>(maxSize);
             if (Objects.nonNull(key1)) {
                 entries.add(new SimpleEntry<>(this, key1));
