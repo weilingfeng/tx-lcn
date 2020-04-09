@@ -77,8 +77,9 @@ public class TMSearcher {
             clusterCountLatch = new CountDownLatch(cluster.size() - knownTMClusterSize);
             log.debug("wait connect size is {}", cluster.size() - knownTMClusterSize);
             RPC_CLIENT_INITIALIZER.init(TxManagerHost.parserList(new ArrayList<>(cluster)), true);
-            clusterCountLatch.await(10, TimeUnit.SECONDS);
-            echoTMClusterSuccessful();
+            if(clusterCountLatch.await(10L, TimeUnit.SECONDS)){
+                echoTMClusterSuccessful();
+            }
         } catch (RpcException | InterruptedException e) {
             throw new IllegalStateException("There is no normal TM.");
         }
