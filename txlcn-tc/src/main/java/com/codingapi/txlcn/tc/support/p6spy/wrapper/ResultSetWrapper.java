@@ -762,6 +762,7 @@ public class ResultSetWrapper extends AbstractWrapper implements ResultSet {
     delegate.updateNull(columnIndex);
   }
 
+  @Override
   public void updateBoolean(int columnIndex, boolean x) throws SQLException {
     delegate.updateBoolean(columnIndex, x);
   }

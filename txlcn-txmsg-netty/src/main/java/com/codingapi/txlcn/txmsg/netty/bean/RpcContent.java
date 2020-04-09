@@ -68,21 +68,19 @@ public class RpcContent {
     }
 
     public void await(long timeout) {
+        lock.lock();
         try {
-            lock.lock();
-            try {
-                condition.await(timeout, TimeUnit.MILLISECONDS);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        } finally {
+            condition.await(timeout, TimeUnit.MILLISECONDS);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }finally {
             lock.unlock();
         }
     }
 
     public void signal() {
+        lock.lock();
         try {
-            lock.lock();
             condition.signal();
         } finally {
             lock.unlock();

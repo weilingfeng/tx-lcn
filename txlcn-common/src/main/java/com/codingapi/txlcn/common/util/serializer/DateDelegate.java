@@ -18,15 +18,18 @@ public class DateDelegate implements Delegate<Date> {
         return WireFormat.FieldType.FIXED64;
     }
 
+    @Override
     public Date readFrom(Input input) throws IOException {
         return new Date(input.readFixed64());
     }
 
+    @Override
     public void writeTo(Output output, int number, Date value,
                         boolean repeated) throws IOException {
         output.writeFixed64(number, value.getTime(), repeated);
     }
 
+    @Override
     public void transfer(Pipe pipe, Input input, Output output, int number,
                          boolean repeated) throws IOException {
         output.writeFixed64(number, input.readFixed64(), repeated);

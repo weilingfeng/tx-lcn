@@ -36,16 +36,19 @@ public class MultisetDelegate implements Delegate<Multiset> {
         return WireFormat.FieldType.BYTES;
     }
 
+    @Override
     public Multiset readFrom(Input input) throws IOException {
         return javaSerializer.deSerialize(input.readBytes().toByteArray(),typeClass());
     }
 
+    @Override
     public void writeTo(Output output, int number, Multiset value,
                         boolean repeated) throws IOException {
         byte[] bytes =  javaSerializer.serialize(value);
         output.writeBytes(number, ByteString.copyFrom(bytes), repeated);
     }
 
+    @Override
     public void transfer(Pipe pipe, Input input, Output output, int number,
                          boolean repeated) throws IOException {
         output.writeBytes(number, input.readBytes(), repeated);

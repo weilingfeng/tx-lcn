@@ -34,23 +34,28 @@ import java.sql.Timestamp;
  */
 public class TimestampDelegate implements Delegate<Timestamp> {
 
+    @Override
     public WireFormat.FieldType getFieldType() {
         return WireFormat.FieldType.FIXED64;
     }
 
+    @Override
     public Class<?> typeClass() {
         return Timestamp.class;
     }
 
+    @Override
     public Timestamp readFrom(Input input) throws IOException {
         return new Timestamp(input.readFixed64());
     }
 
+    @Override
     public void writeTo(Output output, int number, Timestamp value,
                         boolean repeated) throws IOException {
         output.writeFixed64(number, value.getTime(), repeated);
     }
 
+    @Override
     public void transfer(Pipe pipe, Input input, Output output, int number,
                          boolean repeated) throws IOException {
         output.writeFixed64(number, input.readFixed64(), repeated);
