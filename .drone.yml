@@ -14,6 +14,42 @@ trigger:
 
 steps:
 
+- name: build-settings
+  image: docker-registry.yizhishang.com/knives/drone-maven-setting:latest
+  settings:
+    servers:
+    - id: maven-public
+      username: admin
+      password: root
+    - id: maven-releases
+      username: admin
+      password: root
+    - id: maven-snapshots
+      username: $${env.USERNAME}
+      password: $${env.PASSWORD}
+    mirrors:
+    - id: maven-public
+      url: http://nexus.yizhishang.com/repository/maven-public/
+      mirrorOf: central
+
+- name: maven
+  image: docker-registry.yizhishang.com/maven:3-jdk-8
+  pull: IfNotPresent
+  environment:
+    USERNAME:
+      from_secret: username
+    PASSWORD:
+      from_secret: password
+  volumes:
+  - name: MavenCache
+    path: /drone/src/repo
+  commands:
+    - mvn clean deploy -s settings.xml -DskipTests -U
+  when:
+    event: push
+  depends_on:
+  - build-settings
+
 - name: code-analysis
   image: docker-registry.yizhishang.com/aosapps/drone-sonar-plugin:latest
   pull: IfNotPresent
@@ -22,43 +58,10 @@ steps:
     sonar_token: 5db8d2a62d00b5218b346da4333fa5ba368e3010
     level: debug
     showProfiling: true
+  depends_on:
+    - maven
 
-#- name: build-settings
-#  image: docker-registry.yizhishang.com/knives/drone-maven-setting:latest
-#  settings:
-#    servers:
-#    - id: maven-public
-#      username: admin
-#      password: root
-#    - id: maven-releases
-#      username: admin
-#      password: root
-#    - id: maven-snapshots
-#      username: $${env.USERNAME}
-#      password: $${env.PASSWORD}
-#    mirrors:
-#    - id: maven-public
-#      url: http://nexus.yizhishang.com/repository/maven-public/
-#      mirrorOf: central
-#
-#- name: maven
-#  image: docker-registry.yizhishang.com/maven:3-jdk-8
-#  pull: IfNotPresent
-#  environment:
-#    USERNAME:
-#      from_secret: username
-#    PASSWORD:
-#      from_secret: password
-#  volumes:
-#  - name: MavenCache
-#    path: /drone/src/repo
-#  commands:
-#    - mvn clean deploy -s settings.xml -DskipTests -U
-#  when:
-#    event: push
-#  depends_on:
-#  - build-settings
-#
+
 #- name: docker
 #  image: docker-registry.yizhishang.com/plugins/docker:latest
 #  pull: IfNotPresent
