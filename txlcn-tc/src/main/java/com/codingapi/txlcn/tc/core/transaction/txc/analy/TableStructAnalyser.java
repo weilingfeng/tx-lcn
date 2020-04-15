@@ -84,7 +84,6 @@ public class TableStructAnalyser {
             if (connection != null) {
                 DbUtils.close(connection);
             }
-
         }
     }
 
