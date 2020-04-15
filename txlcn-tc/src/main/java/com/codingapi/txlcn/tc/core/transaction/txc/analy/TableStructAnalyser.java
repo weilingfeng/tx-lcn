@@ -58,8 +58,13 @@ public class TableStructAnalyser {
             }
         } catch (SQLException e) {
             try {
-                DbUtils.close(structRs);
-                DbUtils.close(columnSet);
+                if (structRs != null) {
+                    DbUtils.close(structRs);
+                }
+                if (columnSet != null) {
+                    DbUtils.close(columnSet);
+                }
+
             } catch (SQLException ignored) {
             }
             throw e;
@@ -76,10 +81,12 @@ public class TableStructAnalyser {
             return analyse(connection, table);
         } finally {
             DTXLocalContext.undoProxyStatus();
-            DbUtils.close(connection);
+            if (connection != null) {
+                DbUtils.close(connection);
+            }
+
         }
     }
-
 
     public boolean existsTable(Connection connection, String table) throws SQLException {
         ResultSet resultSet = null;
@@ -91,7 +98,9 @@ public class TableStructAnalyser {
         } catch (SQLException e) {
             throw e;
         } finally {
-            DbUtils.close(resultSet);
+            if (resultSet != null) {
+                DbUtils.close(resultSet);
+            }
         }
         return false;
     }
@@ -111,7 +120,9 @@ public class TableStructAnalyser {
             connection.setAutoCommit(true);
             return existsTable(connection, tableName);
         } finally {
-            DbUtils.close(connection);
+            if (connection != null) {
+                DbUtils.close(connection);
+            }
             DTXLocalContext.undoProxyStatus();
         }
     }
