@@ -45,8 +45,6 @@ public class SocketManager {
 
     private ChannelGroup channels;
 
-    private static volatile SocketManager manager = null;
-
     private long attrDelayTime = 1000L * 60;
 
     private SocketManager() {
