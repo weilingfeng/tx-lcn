@@ -64,18 +64,23 @@ public class SocketManager {
         }));
     }
 
+    private enum Singleton {
+        INSTANCE;
 
-    public static SocketManager getInstance() {
-        if (manager == null) {
-            synchronized (SocketManager.class) {
-                if (manager == null) {
-                    manager = new SocketManager();
-                }
-            }
+        private final SocketManager instance;
+
+        Singleton() {
+            instance = new SocketManager();
         }
-        return manager;
+
+        private SocketManager getInstance() {
+            return instance;
+        }
     }
 
+    public static SocketManager getInstance() {
+        return Singleton.INSTANCE.getInstance();
+    }
 
     public void addChannel(Channel channel) {
         channels.add(channel);
@@ -101,7 +106,6 @@ public class SocketManager {
         }
     }
 
-
     private Channel getChannel(String key) throws RpcException {
         for (Channel channel : channels) {
             String val = channel.remoteAddress().toString();
@@ -111,7 +115,6 @@ public class SocketManager {
         }
         throw new RpcException("channel not online.");
     }
-
 
     public RpcResponseState send(String key, RpcCmd cmd) throws RpcException {
         Channel channel = getChannel(key);
@@ -139,7 +142,6 @@ public class SocketManager {
     public MessageDto request(String key, RpcCmd cmd) throws RpcException {
         return request(key, cmd, -1);
     }
-
 
     public List<String> loadAllRemoteKey() {
         List<String> allKeys = new ArrayList<>();
