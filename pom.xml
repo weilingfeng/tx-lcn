@@ -349,6 +349,13 @@
         <!--</repository>-->
     <!--</distributionManagement>-->
 
+    <repositories>
+        <repository>
+            <id>maven-public</id>
+            <url>http://nexus.yizhishang.com/repository/maven-public/</url>
+        </repository>
+    </repositories>
+
     <distributionManagement>
         <repository>
             <id>maven-releases</id>
