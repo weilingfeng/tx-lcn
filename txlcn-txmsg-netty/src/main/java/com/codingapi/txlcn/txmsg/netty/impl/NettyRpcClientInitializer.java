@@ -80,7 +80,7 @@ public class NettyRpcClientInitializer implements RpcClientInitializer, Disposab
         workerGroup = new NioEventLoopGroup();
         log.debug("TM size: {}", hosts.size());
         for (TxManagerHost host : hosts) {
-            log.debug("TM: {}:{}", host.getHost(),host.getPort());
+            log.debug("TM: {}:{}", host.getHost(), host.getPort());
             Optional<Future> future = connect(new InetSocketAddress(host.getHost(), host.getPort()));
             if (sync && future.isPresent()) {
                 try {
@@ -93,29 +93,27 @@ public class NettyRpcClientInitializer implements RpcClientInitializer, Disposab
     }
 
     @Override
-    public Optional<Future> connect(SocketAddress socketAddress) {
-        synchronized(this){
-            if (SocketManager.getInstance().noConnect(socketAddress)) {
+    public synchronized Optional<Future> connect(SocketAddress socketAddress) {
+        if (SocketManager.getInstance().noConnect(socketAddress)) {
+            try {
+                Bootstrap b = new Bootstrap();
+                b.group(workerGroup);
+                b.channel(NioSocketChannel.class);
+                b.option(ChannelOption.SO_KEEPALIVE, true);
+                b.option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 5000);
+                b.handler(nettyRpcClientChannelInitializer);
+                return Optional.of(b.connect(socketAddress).syncUninterruptibly());
+            } catch (Exception e) {
+                log.warn("Connect socket({}) fail. {}ms latter try again.", socketAddress, rpcConfig.getReconnectDelay());
                 try {
-                    Bootstrap b = new Bootstrap();
-                    b.group(workerGroup);
-                    b.channel(NioSocketChannel.class);
-                    b.option(ChannelOption.SO_KEEPALIVE, true);
-                    b.option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 5000);
-                    b.handler(nettyRpcClientChannelInitializer);
-                    return Optional.of(b.connect(socketAddress).syncUninterruptibly());
-                } catch (Exception e) {
-                    log.warn("Connect socket({}) fail. {}ms latter try again.", socketAddress, rpcConfig.getReconnectDelay());
-                    try {
-                        this.wait(rpcConfig.getReconnectDelay());
-                    } catch (InterruptedException e1) {
-                        e1.printStackTrace();
-                    }
+                    this.wait(rpcConfig.getReconnectDelay());
+                } catch (InterruptedException e1) {
+                    e1.printStackTrace();
                 }
             }
-            // 忽略已连接的连接
-            return Optional.empty();
         }
+        // 忽略已连接的连接
+        return Optional.empty();
     }
 
     @Override
