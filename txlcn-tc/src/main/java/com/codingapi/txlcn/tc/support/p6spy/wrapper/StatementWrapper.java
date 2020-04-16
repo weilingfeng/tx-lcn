@@ -73,8 +73,8 @@ public class StatementWrapper extends AbstractWrapper implements Statement {
         statementInformation.setStatementQuery(sql);
         SQLException e = null;
         long start = System.nanoTime();
-        try {
-            return ResultSetWrapper.wrap(delegate.executeQuery(eventListener.onBeforeExecuteQuery(statementInformation, sql)), new ResultSetInformation(statementInformation), eventListener);
+        try (ResultSet resultSet = delegate.executeQuery(eventListener.onBeforeExecuteQuery(statementInformation, sql))) {
+            return ResultSetWrapper.wrap(resultSet, new ResultSetInformation(statementInformation), eventListener);
         } catch (SQLException sqle) {
             e = sqle;
             throw e;
