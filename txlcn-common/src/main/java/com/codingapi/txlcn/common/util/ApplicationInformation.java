@@ -15,15 +15,16 @@
  */
 package com.codingapi.txlcn.common.util;
 
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.autoconfigure.web.ServerProperties;
+import org.springframework.core.env.ConfigurableEnvironment;
+import org.springframework.util.StringUtils;
+
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
 import java.util.Enumeration;
 import java.util.Objects;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.autoconfigure.web.ServerProperties;
-import org.springframework.core.env.ConfigurableEnvironment;
-import org.springframework.util.StringUtils;
 
 /**
  * Description: Date: 19-1-24 下午1:44
@@ -36,7 +37,7 @@ public class ApplicationInformation {
     /**
      * 模块标识
      *
-     * @param environment Spring Env
+     * @param environment      Spring Env
      * @param serverProperties serverProperties
      * @return 标识
      */
@@ -65,10 +66,8 @@ public class ApplicationInformation {
                     InetAddress inetAddress = enumIpAddr.nextElement();
                     if (!inetAddress.isLoopbackAddress()) {
                         String ipAddress = inetAddress.getHostAddress();
-                        if (!ipAddress.contains("::") && !ipAddress.contains("0:0:") && !ipAddress.contains("fe80")) {
-                            if (!"127.0.0.1".equals(ip)) {
-                                ip = ipAddress;
-                            }
+                        if (!ipAddress.contains("::") && !ipAddress.contains("0:0:") && !ipAddress.contains("fe80") && !"127.0.0.1".equals(ip)) {
+                            ip = ipAddress;
                         }
                     }
                 }

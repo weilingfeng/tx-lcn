@@ -20,8 +20,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.util.StringUtils;
 
-import java.util.Date;
-
 /**
  * Description:
  * Date: 19-1-17 下午2:47

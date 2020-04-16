@@ -16,8 +16,6 @@
 package com.codingapi.txlcn.tc.config;
 
 import com.codingapi.txlcn.common.base.Consts;
-import java.util.List;
-import java.util.stream.Collectors;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +23,9 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Description: Company: CodingApi Date: 2018/11/29

@@ -35,10 +35,12 @@ public class MultimapDelegate implements Delegate<Multimap> {
         return WireFormat.FieldType.BYTES;
     }
 
+    @Override
     public Multimap readFrom(Input input) throws IOException {
         return javaSerializer.deSerialize(input.readBytes().toByteArray(),typeClass());
     }
 
+    @Override
     public void writeTo(Output output, int number, Multimap value,
                         boolean repeated) throws IOException {
 
@@ -46,6 +48,7 @@ public class MultimapDelegate implements Delegate<Multimap> {
         output.writeBytes(number, ByteString.copyFrom(bytes), repeated);
     }
 
+    @Override
     public void transfer(Pipe pipe, Input input, Output output, int number,
                          boolean repeated) throws IOException {
         output.writeBytes(number, input.readBytes(), repeated);

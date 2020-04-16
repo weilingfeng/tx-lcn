@@ -15,13 +15,13 @@
  */
 package com.codingapi.txlcn.tc.core.transaction.txc.analy;
 
+import com.codingapi.txlcn.common.exception.TxcLogicException;
 import com.codingapi.txlcn.tc.core.DTXLocalContext;
 import com.codingapi.txlcn.tc.core.context.TCGlobalContext;
 import com.codingapi.txlcn.tc.core.transaction.txc.analy.def.SqlExecuteInterceptor;
 import com.codingapi.txlcn.tc.core.transaction.txc.analy.def.TxcService;
 import com.codingapi.txlcn.tc.core.transaction.txc.analy.def.bean.*;
 import com.codingapi.txlcn.tc.core.transaction.txc.analy.util.SqlUtils;
-import com.codingapi.txlcn.common.exception.TxcLogicException;
 import com.codingapi.txlcn.tc.support.p6spy.common.StatementInformation;
 import lombok.extern.slf4j.Slf4j;
 import net.sf.jsqlparser.schema.Column;

@@ -15,7 +15,6 @@
  */
 package com.codingapi.txlcn.tc.txmsg.transaction;
 
-import com.codingapi.txlcn.logger.TxLogger;
 import com.codingapi.txlcn.tc.core.context.TCGlobalContext;
 import com.codingapi.txlcn.tc.core.template.TransactionCleanTemplate;
 import lombok.extern.slf4j.Slf4j;

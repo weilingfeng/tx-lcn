@@ -16,10 +16,10 @@
 package com.codingapi.txlcn.tc.txmsg;
 
 import com.codingapi.txlcn.common.runner.TxLcnInitializer;
+import com.codingapi.txlcn.tc.config.TxClientConfig;
 import com.codingapi.txlcn.txmsg.RpcClientInitializer;
 import com.codingapi.txlcn.txmsg.RpcConfig;
 import com.codingapi.txlcn.txmsg.dto.TxManagerHost;
-import com.codingapi.txlcn.tc.config.TxClientConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

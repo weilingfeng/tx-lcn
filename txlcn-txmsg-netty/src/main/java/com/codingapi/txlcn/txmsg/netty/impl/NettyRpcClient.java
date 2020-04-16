@@ -21,8 +21,8 @@ import com.codingapi.txlcn.txmsg.dto.MessageDto;
 import com.codingapi.txlcn.txmsg.dto.RpcCmd;
 import com.codingapi.txlcn.txmsg.dto.RpcResponseState;
 import com.codingapi.txlcn.txmsg.exception.RpcException;
-import com.codingapi.txlcn.txmsg.netty.bean.SocketManager;
 import com.codingapi.txlcn.txmsg.netty.bean.NettyRpcCmd;
+import com.codingapi.txlcn.txmsg.netty.bean.SocketManager;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 

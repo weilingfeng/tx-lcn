@@ -1,6 +1,7 @@
 # Distributed Transaction Framework - LCN (5.0.2.RELEASE)
 
 [![Maven](https://img.shields.io/badge/endpoint.svg?url=https://bbs.txlcn.org/maven-central)](https://bbs.txlcn.org/maven-list)
+[![警报](http://sonar.yizhishang.com/api/project_badges/measure?project=yizhishang%3Atx-lcn&metric=alert_status)](http://sonar.yizhishang.com/dashboard?id=yizhishang%3Atx-lcn)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://github.com/codingapi/tx-lcn/blob/master/LICENSE)
 [![Gitter](https://badges.gitter.im/codingapi/tx-lcn.svg)](https://gitter.im/codingapi/tx-lcn?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 

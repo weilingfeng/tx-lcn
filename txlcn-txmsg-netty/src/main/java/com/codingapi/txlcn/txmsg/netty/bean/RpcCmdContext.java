@@ -33,39 +33,44 @@ import java.util.concurrent.CopyOnWriteArrayList;
  */
 @Slf4j
 public class RpcCmdContext {
-    
+
     private int cacheSize = 1024;
-    
+
     private long waitTime = 1;
-    
-    private static volatile RpcCmdContext context = null;
-    
+
     private Map<String, RpcContent> map;
-    
+
     private List<RpcContent> cacheList;
-    
+
     private final LinkedList<RpcContent> freeList;
-    
-    public static RpcCmdContext getInstance() {
-        if (context == null) {
-            synchronized (RpcCmdContext.class) {
-                if (context == null) {
-                    context = new RpcCmdContext();
-                }
-            }
+
+    private enum Singleton {
+        INSTANCE;
+
+        private final RpcCmdContext instance;
+
+        Singleton() {
+            instance = new RpcCmdContext();
         }
-        return context;
+
+        private RpcCmdContext getInstance() {
+            return instance;
+        }
     }
-    
+
+    public static RpcCmdContext getInstance() {
+        return Singleton.INSTANCE.getInstance();
+    }
+
     private RpcCmdContext() {
         map = new ConcurrentHashMap<>();
-        
+
         cacheList = new CopyOnWriteArrayList<>();
-        
+
         freeList = new LinkedList<>();
     }
-    
-    
+
+
     /**
      * 并发可能会出现脏读
      *
@@ -75,7 +80,7 @@ public class RpcCmdContext {
     public synchronized boolean hasKey(String key) {
         return map.containsKey(key);
     }
-    
+
     /**
      * 并发可能会出重复添加
      *
@@ -87,8 +92,7 @@ public class RpcCmdContext {
         map.put(key, rpcContent);
         return rpcContent;
     }
-    
-    
+
     /**
      * 空闲队列处理
      *
@@ -103,12 +107,12 @@ public class RpcCmdContext {
                 return cacheContent;
             }
         }
-        
+
         RpcContent rpcContent = new RpcContent(getWaitTime());
         rpcContent.init();
         return rpcContent;
     }
-    
+
     private RpcContent createRpcContent() {
         if (cacheList.size() < cacheSize || freeList.size() == 0) {
             RpcContent rpcContent = new RpcContent(getWaitTime());
@@ -119,13 +123,13 @@ public class RpcCmdContext {
             return findRpcContent();
         }
     }
-    
+
     public RpcContent getKey(String key) {
         RpcContent rpcContent = map.get(key);
         clearKey(key);
         return rpcContent;
     }
-    
+
     private void clearKey(String key) {
         RpcContent rpcContent = map.get(key);
         if (cacheList.contains(rpcContent)) {
@@ -135,14 +139,14 @@ public class RpcCmdContext {
         }
         map.remove(key);
     }
-    
-    
+
+
     public void setRpcConfig(RpcConfig rpcConfig) {
         cacheSize = rpcConfig.getCacheSize();
         // TC or TX init after
         waitTime = rpcConfig.getWaitTime() == -1 ? 500 : rpcConfig.getWaitTime();
     }
-    
+
     public long getWaitTime() {
         return waitTime;
     }

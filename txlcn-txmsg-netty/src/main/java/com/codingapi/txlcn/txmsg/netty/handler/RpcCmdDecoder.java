@@ -15,10 +15,10 @@
  */
 package com.codingapi.txlcn.txmsg.netty.handler;
 
+import com.codingapi.txlcn.txmsg.MessageConstants;
 import com.codingapi.txlcn.txmsg.listener.HeartbeatListener;
 import com.codingapi.txlcn.txmsg.netty.bean.NettyRpcCmd;
 import com.codingapi.txlcn.txmsg.netty.bean.RpcContent;
-import com.codingapi.txlcn.txmsg.MessageConstants;
 import com.codingapi.txlcn.txmsg.netty.em.NettyType;
 import com.codingapi.txlcn.txmsg.netty.impl.NettyContext;
 import io.netty.channel.ChannelHandler;

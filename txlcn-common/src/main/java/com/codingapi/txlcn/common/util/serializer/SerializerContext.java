@@ -22,29 +22,32 @@ import java.io.OutputStream;
 
 /**
  * @author lorne  2018/12/31
- *
  */
 public class SerializerContext implements ISerializer {
 
     private ProtostuffSerializer protostuffSerializer;
 
-    private SerializerContext(){
+    private SerializerContext() {
         protostuffSerializer = new ProtostuffSerializer();
     }
 
-    private static volatile SerializerContext context = null;
+    private enum Singleton {
+        INSTANCE;
 
-    public static SerializerContext getInstance() {
-        if (context == null) {
-            synchronized (SerializerContext.class) {
-                if (context == null) {
-                    context = new SerializerContext();
-                }
-            }
+        private final SerializerContext instance;
+
+        Singleton() {
+            instance = new SerializerContext();
         }
-        return context;
+
+        private SerializerContext getInstance() {
+            return instance;
+        }
     }
 
+    public static SerializerContext getInstance() {
+        return Singleton.INSTANCE.getInstance();
+    }
 
     @Override
     public byte[] serialize(Object obj) throws SerializerException {
@@ -53,12 +56,12 @@ public class SerializerContext implements ISerializer {
 
     @Override
     public <T> T deSerialize(byte[] param, Class<T> clazz) throws SerializerException {
-        return protostuffSerializer.deSerialize(param,clazz);
+        return protostuffSerializer.deSerialize(param, clazz);
     }
 
     @Override
     public <T> T deSerialize(InputStream inputStream, Class<T> clazz) throws SerializerException {
-        return protostuffSerializer.deSerialize(inputStream,clazz);
+        return protostuffSerializer.deSerialize(inputStream, clazz);
     }
 
     @Override

@@ -15,17 +15,14 @@
  */
 package com.codingapi.txlcn.tc.txmsg;
 
-import com.codingapi.txlcn.common.util.ApplicationInformation;
 import com.codingapi.txlcn.common.util.Transactions;
 import com.codingapi.txlcn.common.util.id.ModIdProvider;
+import com.codingapi.txlcn.tc.config.TxClientConfig;
 import com.codingapi.txlcn.txmsg.RpcClientInitializer;
 import com.codingapi.txlcn.txmsg.dto.TxManagerHost;
 import com.codingapi.txlcn.txmsg.exception.RpcException;
-import com.codingapi.txlcn.tc.config.TxClientConfig;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.web.ServerProperties;
-import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -80,8 +77,9 @@ public class TMSearcher {
             clusterCountLatch = new CountDownLatch(cluster.size() - knownTMClusterSize);
             log.debug("wait connect size is {}", cluster.size() - knownTMClusterSize);
             RPC_CLIENT_INITIALIZER.init(TxManagerHost.parserList(new ArrayList<>(cluster)), true);
-            clusterCountLatch.await(10, TimeUnit.SECONDS);
-            echoTMClusterSuccessful();
+            if(clusterCountLatch.await(10L, TimeUnit.SECONDS)){
+                echoTMClusterSuccessful();
+            }
         } catch (RpcException | InterruptedException e) {
             throw new IllegalStateException("There is no normal TM.");
         }

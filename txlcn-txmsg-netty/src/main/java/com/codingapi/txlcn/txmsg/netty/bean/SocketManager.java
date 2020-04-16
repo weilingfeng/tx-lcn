@@ -45,8 +45,6 @@ public class SocketManager {
 
     private ChannelGroup channels;
 
-    private static volatile SocketManager manager = null;
-
     private long attrDelayTime = 1000L * 60;
 
     private SocketManager() {
@@ -59,22 +57,28 @@ public class SocketManager {
             try {
                 executorService.awaitTermination(10, TimeUnit.MINUTES);
             } catch (InterruptedException ignored) {
+                log.warn("SocketManager: ##", ignored);
             }
         }));
     }
 
+    private enum Singleton {
+        INSTANCE;
 
-    public static SocketManager getInstance() {
-        if (manager == null) {
-            synchronized (SocketManager.class) {
-                if (manager == null) {
-                    manager = new SocketManager();
-                }
-            }
+        private final SocketManager instance;
+
+        Singleton() {
+            instance = new SocketManager();
         }
-        return manager;
+
+        private SocketManager getInstance() {
+            return instance;
+        }
     }
 
+    public static SocketManager getInstance() {
+        return Singleton.INSTANCE.getInstance();
+    }
 
     public void addChannel(Channel channel) {
         channels.add(channel);
@@ -100,7 +104,6 @@ public class SocketManager {
         }
     }
 
-
     private Channel getChannel(String key) throws RpcException {
         for (Channel channel : channels) {
             String val = channel.remoteAddress().toString();
@@ -110,7 +113,6 @@ public class SocketManager {
         }
         throw new RpcException("channel not online.");
     }
-
 
     public RpcResponseState send(String key, RpcCmd cmd) throws RpcException {
         Channel channel = getChannel(key);
@@ -138,7 +140,6 @@ public class SocketManager {
     public MessageDto request(String key, RpcCmd cmd) throws RpcException {
         return request(key, cmd, -1);
     }
-
 
     public List<String> loadAllRemoteKey() {
         List<String> allKeys = new ArrayList<>();
@@ -186,26 +187,26 @@ public class SocketManager {
     /**
      * 绑定连接数据
      *
-     * @param remoteKey  远程标识
-     * @param appName  模块名称
+     * @param remoteKey 远程标识
+     * @param appName   模块名称
      * @param labelName TC标识名称
      */
-    public void bindModuleName(String remoteKey, String appName,String labelName) throws RpcException{
+    public void bindModuleName(String remoteKey, String appName, String labelName) throws RpcException {
         AppInfo appInfo = new AppInfo();
         appInfo.setAppName(appName);
         appInfo.setLabelName(labelName);
         appInfo.setCreateTime(new Date());
-        if(containsLabelName(labelName)){
-            throw new RpcException("labelName:"+labelName+" has exist.");
+        if (containsLabelName(labelName)) {
+            throw new RpcException("labelName:" + labelName + " has exist.");
         }
         appNames.put(remoteKey, appInfo);
     }
 
-    public boolean containsLabelName(String moduleName){
-        Set<String> keys =  appNames.keySet();
-        for(String key:keys){
+    public boolean containsLabelName(String moduleName) {
+        Set<String> keys = appNames.keySet();
+        for (String key : keys) {
             AppInfo appInfo = appNames.get(key);
-            if(moduleName.equals(appInfo.getLabelName())){
+            if (moduleName.equals(appInfo.getLabelName())) {
                 return true;
             }
         }

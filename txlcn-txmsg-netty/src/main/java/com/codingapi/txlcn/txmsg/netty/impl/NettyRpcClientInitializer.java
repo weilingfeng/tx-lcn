@@ -80,7 +80,7 @@ public class NettyRpcClientInitializer implements RpcClientInitializer, Disposab
         workerGroup = new NioEventLoopGroup();
         log.debug("TM size: {}", hosts.size());
         for (TxManagerHost host : hosts) {
-            log.debug("TM: {}:{}", host.getHost(),host.getPort());
+            log.debug("TM: {}:{}", host.getHost(), host.getPort());
             Optional<Future> future = connect(new InetSocketAddress(host.getHost(), host.getPort()));
             if (sync && future.isPresent()) {
                 try {
@@ -91,7 +91,6 @@ public class NettyRpcClientInitializer implements RpcClientInitializer, Disposab
             }
         }
     }
-
 
     @Override
     public synchronized Optional<Future> connect(SocketAddress socketAddress) {
@@ -107,7 +106,7 @@ public class NettyRpcClientInitializer implements RpcClientInitializer, Disposab
             } catch (Exception e) {
                 log.warn("Connect socket({}) fail. {}ms latter try again.", socketAddress, rpcConfig.getReconnectDelay());
                 try {
-                    Thread.sleep(rpcConfig.getReconnectDelay());
+                    this.wait(rpcConfig.getReconnectDelay());
                 } catch (InterruptedException e1) {
                     e1.printStackTrace();
                 }

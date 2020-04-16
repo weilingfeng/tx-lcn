@@ -19,8 +19,6 @@ import com.codingapi.txlcn.common.lock.DTXLocks;
 import com.codingapi.txlcn.tc.MiniConfiguration;
 import com.codingapi.txlcn.txmsg.dto.MessageDto;
 import com.codingapi.txlcn.txmsg.exception.RpcException;
-import com.codingapi.txlcn.tc.txmsg.ReliableMessenger;
-import com.codingapi.txlcn.tc.txmsg.TMSearcher;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;

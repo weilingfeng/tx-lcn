@@ -17,8 +17,8 @@ package com.codingapi.txlcn.tm.txmsg;
 
 import com.codingapi.txlcn.common.runner.TxLcnInitializer;
 import com.codingapi.txlcn.common.runner.TxLcnRunnerOrders;
-import com.codingapi.txlcn.txmsg.RpcConfig;
 import com.codingapi.txlcn.tm.config.TxManagerConfig;
+import com.codingapi.txlcn.txmsg.RpcConfig;
 import com.codingapi.txlcn.txmsg.RpcServerInitializer;
 import com.codingapi.txlcn.txmsg.dto.ManagerProperties;
 import org.springframework.beans.factory.annotation.Autowired;

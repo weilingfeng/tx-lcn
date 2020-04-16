@@ -121,12 +121,6 @@ public class CustomHashedHashSet<T> extends HashSet<T> {
 		map.clear();
 		super.clear();
 	}
-
-	@Override
-	public Object clone() {
-		// TODO implement
-		throw new UnsupportedOperationException();
-	}
 	
 	class CustomHashedHashSetIterator<E> implements Iterator<E> {
 

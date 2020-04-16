@@ -15,9 +15,9 @@
  */
 package com.codingapi.txlcn.tc.core.propagation;
 
+import com.codingapi.txlcn.common.exception.TransactionException;
 import com.codingapi.txlcn.tc.core.DTXPropagationState;
 import com.codingapi.txlcn.tc.core.TxTransactionInfo;
-import com.codingapi.txlcn.common.exception.TransactionException;
 
 /**
  * Description: 事务分离器
