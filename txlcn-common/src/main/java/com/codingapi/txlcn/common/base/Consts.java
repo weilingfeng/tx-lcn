@@ -6,6 +6,10 @@ package com.codingapi.txlcn.common.base;
  */
 public class Consts {
 
+    private Consts() {
+
+    }
+
     /**
      * 客户端实例
      */
