@@ -116,8 +116,6 @@ steps:
     path: /drone/src/repo
   commands:
     - mvn clean deploy -s settings.xml -DskipTests -U
-  when:
-    event: push
   depends_on:
   - build-settings
 
