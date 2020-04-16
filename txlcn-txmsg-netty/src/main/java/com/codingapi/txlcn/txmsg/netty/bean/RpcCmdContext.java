@@ -44,12 +44,22 @@ public class RpcCmdContext {
 
     private final LinkedList<RpcContent> freeList;
 
-    private static class InstanceHolder {
-        private final static RpcCmdContext instance = new RpcCmdContext();
+    private enum Singleton {
+        INSTANCE;
+
+        private final RpcCmdContext instance;
+
+        Singleton() {
+            instance = new RpcCmdContext();
+        }
+
+        private RpcCmdContext getInstance() {
+            return instance;
+        }
     }
 
     public static RpcCmdContext getInstance() {
-        return InstanceHolder.instance;
+        return Singleton.INSTANCE.getInstance();
     }
 
     private RpcCmdContext() {
