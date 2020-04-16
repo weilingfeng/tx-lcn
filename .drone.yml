@@ -18,7 +18,8 @@ steps:
   pull: IfNotPresent
   settings:
     sonar_host: http://sonar.yizhishang.com
-    sonar_token: 5db8d2a62d00b5218b346da4333fa5ba368e3010
+    sonar_token:
+      from_secret: sonar_token
     level: debug
     showProfiling: true
 
