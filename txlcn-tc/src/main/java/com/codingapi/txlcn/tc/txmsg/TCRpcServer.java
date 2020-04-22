@@ -51,7 +51,7 @@ public class TCRpcServer implements TxLcnInitializer {
     public void init() throws Exception {
         // rpc timeout (ms)
         if (rpcConfig.getWaitTime() <= 5) {
-            rpcConfig.setWaitTime(1000);
+            rpcConfig.setWaitTime(1000L);
         }
 
         // rpc client init.

@@ -138,9 +138,10 @@ public class TMAutoCluster implements TxLcnInitializer {
     public boolean notifyClient(String label, int count){
         log.info("Try notify client({}) - count {}", label, count);
         String url = String.format("http://%s/notify/reconnect", label);
-        Boolean result = false;
         try{
-            result = restTemplate.postForObject(url, null, Boolean.class);
+            restTemplate.postForObject(url, null, Boolean.class);
+            log.info("Notify client({}) successfully!", label);
+            return true;
         }catch (Exception e){
             log.error(e.getMessage());
             if (e instanceof ResourceAccessException) {
@@ -152,14 +153,10 @@ public class TMAutoCluster implements TxLcnInitializer {
                 }
             }
         }
-        if(result){
-            log.info("Notify client({}) successfully!", label);
-            return true;
-        }
-        if(result == false && --count > 0){
+        if(--count > 0){
             log.warn("Notify client({}) fail. 3s latter try again.", label);
             try {
-                Thread.sleep(3000);
+                Thread.sleep(3000L);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

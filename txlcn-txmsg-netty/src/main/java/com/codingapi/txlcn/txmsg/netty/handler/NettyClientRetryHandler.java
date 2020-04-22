@@ -83,7 +83,7 @@ public class NettyClientRetryHandler extends ChannelInboundHandlerAdapter {
         log.error("socketAddress:{} ", socketAddress);
 
         if(attempts++ < rpcConfig.getReconnectCount()){
-            Thread.sleep(3000);
+            Thread.sleep(3000L);
             log.info("Try connect socket({}) - count {}", socketAddress, attempts);
             NettyRpcClientInitializer.reConnect(socketAddress);
             return ;

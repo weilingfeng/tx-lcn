@@ -51,7 +51,7 @@ public class TMRpcServer implements TxLcnInitializer {
     public void init() {
         // 1. 配置
         if (rpcConfig.getWaitTime() <= 5) {
-            rpcConfig.setWaitTime(1000);
+            rpcConfig.setWaitTime(1000L);
         }
         if (rpcConfig.getAttrDelayTime() < 0) {
             rpcConfig.setAttrDelayTime(txManagerConfig.getDtxTime());

@@ -50,6 +50,6 @@ public class RpcConfig {
     /**
      * 重连延迟时间(ms)
      */
-    private long reconnectDelay = 3000;
+    private long reconnectDelay = 3000L;
 
 }

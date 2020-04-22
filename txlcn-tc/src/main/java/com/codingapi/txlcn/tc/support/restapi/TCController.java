@@ -20,8 +20,12 @@ import java.util.stream.Collectors;
 @RestController
 public class TCController {
 
+    private final ApplicationContext applicationContext;
+
     @Autowired
-    private ApplicationContext applicationContext;
+    public TCController(ApplicationContext applicationContext) {
+        this.applicationContext = applicationContext;
+    }
 
     @PostMapping("/notify/reconnect")
     public Boolean reconnect() throws Exception{

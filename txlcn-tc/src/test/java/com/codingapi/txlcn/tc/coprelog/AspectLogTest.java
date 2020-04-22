@@ -32,6 +32,6 @@ public class AspectLogTest {
         transactionInfo.setTargetClazz(String.class);
         transactionInfo.setArgumentValues(new Object[]{"1", 2});
         aspectLogger.trace(RandomUtils.randomKey(), RandomUtils.randomKey(), transactionInfo);
-        Thread.sleep(1000);
+        Thread.sleep(1000L);
     }
 }

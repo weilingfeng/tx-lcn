@@ -17,6 +17,6 @@ public class RunTest {
 
     @Test
     public void testTxc() throws InterruptedException {
-        Thread.sleep(10000);
+        Thread.sleep(10000L);
     }
 }
