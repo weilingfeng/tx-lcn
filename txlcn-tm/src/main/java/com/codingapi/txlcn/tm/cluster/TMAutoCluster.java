@@ -34,6 +34,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.client.ResourceAccessException;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 import java.net.ConnectException;
@@ -57,6 +58,7 @@ public class TMAutoCluster implements TxLcnInitializer {
     private final TxManagerConfig txManagerConfig;
 
     private static final String MANAGER_REFRESH_URL = "http://%s:%s/manager/refresh";
+    private static final int NOTIFY_COUNT = 3;
 
     private final ServerProperties serverProperties;
 
@@ -66,8 +68,8 @@ public class TMAutoCluster implements TxLcnInitializer {
 
     @Autowired
     public TMAutoCluster(FastStorage fastStorage, RestTemplate restTemplate, TxManagerConfig txManagerConfig,
-            ServerProperties serverProperties, RpcClient rpcClient,
-            RedisTemplate<String, String> stringRedisTemplate) {
+                         ServerProperties serverProperties, RpcClient rpcClient,
+                         RedisTemplate<String, String> stringRedisTemplate) {
         this.fastStorage = fastStorage;
         this.restTemplate = restTemplate;
         this.txManagerConfig = txManagerConfig;
@@ -131,40 +133,41 @@ public class TMAutoCluster implements TxLcnInitializer {
                 continue;
             }
 
-            new Thread(()-> notifyClient(label, 3)).start();
+            new Thread(() -> notifyClient(label, 1)).start();
         }
     }
 
-    public boolean notifyClient(String label, int count){
+    public boolean notifyClient(String label, int count) {
+        if (count > NOTIFY_COUNT) {
+            log.error("Finally, notify client({}) failed!!!", label);
+            log.info("remove the tc-instances from redis: {}", label);
+            return false;
+        }
         log.info("Try notify client({}) - count {}", label, count);
         String url = String.format("http://%s/notify/reconnect", label);
-        try{
+        try {
             restTemplate.postForObject(url, null, Boolean.class);
             log.info("Notify client({}) successfully!", label);
             return true;
-        }catch (Exception e){
+        } catch (RestClientException e) {
             log.error(e.getMessage());
             if (e instanceof ResourceAccessException) {
                 ResourceAccessException resourceAccessException = (ResourceAccessException) e;
                 if (resourceAccessException.getCause() != null && resourceAccessException.getCause() instanceof ConnectException) {
                     //can't access .
                     stringRedisTemplate.opsForSet().remove(Consts.REDIS_TC_LIST, label);
-                    return false;
                 }
+                return false;
             }
         }
-        if(--count > 0){
-            log.warn("Notify client({}) fail. 3s latter try again.", label);
-            try {
-                Thread.sleep(3000L);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            return notifyClient(label, count);
+        log.warn("Notify client({}) failed. 3s latter try again.", label);
+        try {
+            Thread.sleep(3000L);
+            return notifyClient(label, count++);
+        } catch (InterruptedException e) {
+            log.error("Notify failed", e);
+            return false;
         }
-        log.error("Finally, notify client({}) fail!!!", label);
-        log.info("remove the tc-instances from redis: {}", label);
-        return false;
     }
 
     @Override
