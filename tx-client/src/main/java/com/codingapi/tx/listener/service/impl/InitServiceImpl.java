@@ -26,15 +26,15 @@ public class InitServiceImpl implements InitService {
     }
 
     private void welcome(){
-        System.out.println();
-        System.out.println();
-        System.out.println("\t\t**  \t\t ****\t\t**  **");
-        System.out.println("\t\t**  \t\t**   \t\t*** **");
-        System.out.println("\t\t**  \t\t**   \t\t** ***");
-        System.out.println("\t\t*****\t\t ****\t\t**  **");
-        System.out.println();
-        System.out.println("\t\tLCN-Client version:4.1.0");
-        System.out.println();
+        logger.info("");
+        logger.info("");
+        logger.info("\t\t**  \t\t ****\t\t**  **");
+        logger.info("\t\t**  \t\t**   \t\t*** **");
+        logger.info("\t\t**  \t\t**   \t\t** ***");
+        logger.info("\t\t*****\t\t ****\t\t**  **");
+        logger.info("");
+        logger.info("\t\tLCN-Client version:4.1.0-xcloud");
+        logger.info("");
     }
 
 }

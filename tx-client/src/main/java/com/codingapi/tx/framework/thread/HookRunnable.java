@@ -1,6 +1,8 @@
 package com.codingapi.tx.framework.thread;
 
 import com.codingapi.tx.Constants;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.concurrent.TimeUnit;
 
@@ -11,6 +13,7 @@ public abstract class HookRunnable implements Runnable {
 
     private volatile boolean hasOver;
 
+    private Logger logger = LoggerFactory.getLogger(HookRunnable.class);
     @Override
     public void run() {
         Thread thread = new Thread() {
@@ -29,7 +32,7 @@ public abstract class HookRunnable implements Runnable {
         if (!Constants.hasExit) {
             Runtime.getRuntime().addShutdownHook(thread);
         } else {
-            System.out.println("jvm has exit..");
+            logger.info("jvm has exit..");
             return;
         }
         try {

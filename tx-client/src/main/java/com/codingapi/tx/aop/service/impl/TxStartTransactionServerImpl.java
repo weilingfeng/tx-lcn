@@ -67,7 +67,7 @@ public class TxStartTransactionServerImpl implements TransactionServer {
 
             int rs = txManagerService.closeTransactionGroup(groupId, state);
 
-            int lastState = rs==-1?0:state;
+            int lastState = (rs==-1 || rs == 0)?0:state;//为0或者-1的时候都应该回滚而不仅仅是-1的时候
 
             int executeConnectionError = 0;
 

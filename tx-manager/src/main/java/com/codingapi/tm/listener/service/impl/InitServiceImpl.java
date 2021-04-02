@@ -4,6 +4,8 @@ import com.codingapi.tm.Constants;
 import com.codingapi.tm.config.ConfigReader;
 import com.codingapi.tm.listener.service.InitService;
 import com.codingapi.tm.netty.service.NettyServerService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,6 +15,8 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class InitServiceImpl implements InitService {
+
+    private final static Logger logger = LoggerFactory.getLogger(InitServiceImpl.class);
 
     @Autowired
     private NettyServerService nettyServerService;
@@ -33,16 +37,16 @@ public class InitServiceImpl implements InitService {
     }
 
 
-    private void welcome(){
-        System.out.println();
-        System.out.println();
-        System.out.println("\t\t**  \t\t ****\t\t**  **");
-        System.out.println("\t\t**  \t\t**   \t\t*** **");
-        System.out.println("\t\t**  \t\t**   \t\t** ***");
-        System.out.println("\t\t*****\t\t ****\t\t**  **");
-        System.out.println();
-        System.out.println("\t\tLCN-TxManager  version:4.1.0");
-        System.out.println();
+    private void welcome() {
+        logger.info("");
+        logger.info("");
+        logger.info("\t\t**  \t\t ****\t\t**  **");
+        logger.info("\t\t**  \t\t**   \t\t*** **");
+        logger.info("\t\t**  \t\t**   \t\t** ***");
+        logger.info("\t\t*****\t\t ****\t\t**  **");
+        logger.info("");
+        logger.info("\t\tLCN-TxManager  version:4.1.0-xcloud");
+        logger.info("");
     }
 
 

@@ -141,23 +141,23 @@ public class LCNDBConnection extends AbstractTransactionThread implements LCNCon
     public void transaction() throws SQLException {
         if (waitTask == null) {
             rollbackConnection();
-            System.out.println(" waitTask is null");
+            logger.info(" waitTask is null");
             return;
         }
 
 
         //start 结束就是全部事务的结束表示,考虑start挂掉的情况
         Timer timer = new Timer();
-        System.out.println(" maxOutTime : "+maxOutTime);
+        logger.info(" maxOutTime : "+maxOutTime);
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
-                System.out.println("auto execute ,groupId:" + getGroupId());
+                logger.info("auto execute ,groupId:" + getGroupId());
                 dataSourceService.schedule(getGroupId(), waitTask);
             }
         }, maxOutTime);
 
-        System.out.println("transaction is wait for TxManager notify, groupId : " + getGroupId());
+        logger.info("transaction is wait for TxManager notify, groupId : " + getGroupId());
 
         waitTask.awaitTask();
 
@@ -173,10 +173,10 @@ public class LCNDBConnection extends AbstractTransactionThread implements LCNCon
                 rollbackConnection();
             }
 
-            System.out.println("lcn transaction over, res -> groupId:"+getGroupId()+" and  state is "+(rs==1?"commit":"rollback"));
+            logger.info("lcn transaction over, res -> groupId:"+getGroupId()+" and  state is "+(rs==1?"commit":"rollback"));
 
         }catch (SQLException e){
-            System.out.println("lcn transaction over,but connection is closed, res -> groupId:"+getGroupId());
+            logger.info("lcn transaction over,but connection is closed, res -> groupId:"+getGroupId());
 
             waitTask.setState(TaskState.connectionError.getCode());
         }
